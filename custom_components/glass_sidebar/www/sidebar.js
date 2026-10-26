@@ -54,7 +54,7 @@
 
       @media ${phoneQuery} {
         wa-drawer {
-          --size: min(88vw, 360px);
+          --size: min(78vw, 300px);
           --backdrop-filter: blur(8px) saturate(1.2);
         }
 

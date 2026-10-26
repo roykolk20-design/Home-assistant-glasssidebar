@@ -1,7 +1,7 @@
 from typing import Any
 
 DOMAIN = "glass_sidebar"
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 JS_PATH = f"/{DOMAIN}/sidebar.js"
 JS_URL = f"{JS_PATH}?v={VERSION}"
 SIGNAL_UPDATE = f"{DOMAIN}_update"
