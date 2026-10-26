@@ -3,7 +3,7 @@
 # Glass Sidebar for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
-![Version](https://img.shields.io/badge/version-1.6.0-03A9F4)
+![Version](https://img.shields.io/badge/version-1.7.0-03A9F4)
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.10%2B-18BCF2)
 
 A modern, glass-style sidebar for Home Assistant. It turns the left navigation
@@ -25,8 +25,15 @@ is configured entirely from the UI. No YAML, no extra frontend resources.
   corner radius and blur.
 - **Settings page with live preview**: tabs for style, shape and glass,
   color, phone and categories. Every change applies right away.
-- **Styles**: six ready-made looks (Frosted, Midnight, Vivid, Aurora, Minimal,
-  Solid) and your own saved styles.
+- **Your own style, per person**: everyone in the house can pick their own
+  colors and look. It follows them to all their devices. What an admin sets is
+  the standard for everyone else.
+- **Styles**: twelve ready-made looks (Frosted, Midnight, Vivid, Aurora, Ocean,
+  Sunset, Forest, Rose, Graphite, Mono, Minimal, Solid) and your own saved
+  styles.
+- **Design details**: the selected item as a pill, a bar or an outline;
+  compact, normal or roomy spacing; no, soft or deep shadow; an accent glow in
+  the glass; and theme, accent or muted icons.
 - **Categories**: drag panels into your own headings, each with an icon. Tap a
   heading in the sidebar to fold it in or out. On the collapsed sidebar each
   heading becomes a thin divider.
@@ -97,9 +104,23 @@ Click the button above, or add it by hand:
 
 ## Configuration
 
-Go to **Settings → Devices & services → Glass Sidebar** and choose the
-**cog** (Configure). The Glass Sidebar settings page opens. Admins can also
-open it from the **quick menu** in the sidebar header (*All settings*).
+Admins: go to **Settings → Devices & services → Glass Sidebar** and choose the
+**cog** (Configure). Everyone: open the **quick menu** in the sidebar header and
+choose *All settings*. The Glass Sidebar settings page opens.
+
+### Just for me, or for everyone
+
+At the top of the settings page you choose who a change is for:
+
+- **Just for me** (everyone): your own style. Only you see it, on all your
+  devices, because it's stored with your Home Assistant account. As long as you
+  haven't changed anything you follow the standard; *Back to the standard*
+  switches your own style off again.
+- **Standard for everyone** (admins only): what everyone sees who hasn't
+  chosen their own style. Categories and the quick menu switch are always set
+  here, because they're the same for the whole house.
+
+![Your own style](images/personal-style.png)
 
 Every change is saved and shown right away, in the preview and in your real
 sidebar, on every open browser.
@@ -129,14 +150,19 @@ item and accent color. Categories and phone settings stay as they are.
 | Opacity | 74 % | Lower is more see-through. |
 | Glass tint | Theme | *Theme* follows your theme. *Light* or *Dark* gives the glass a fixed color with matching text. |
 | Selected item | Soft tint | *Soft tint* or *Vivid with glow*. |
+| Selected item shape | Pill | *Pill*, *Bar* (a line at the side) or *Outline*. |
+| Spacing | Normal | *Compact*, *Normal* or *Roomy* rows. |
+| Shadow | Soft | *None*, *Soft* or *Deep*. |
+| Accent glow | Off | A soft light of your accent color in the top of the glass. |
 | Hover animation | On | Icons slide slightly when you point at them. |
 | Glass dashboard cards | Off | Makes cards translucent. Best with a background image; can be heavy on older tablets. |
-| Quick menu | On | The button in the sidebar header. Only admins see it. |
+| Quick menu | On | The button in the sidebar header. Shared setting. |
 
 ### Color
 
 Use your theme's accent color, or pick one of the swatches or any color of
-your own.
+your own. **Icon color** makes the sidebar icons follow your theme, your
+accent color, or a calmer muted gray.
 
 ### Phone
 
@@ -179,7 +205,8 @@ order and visibility you set with Home Assistant's own *Edit sidebar*
 
 The button in the sidebar header opens a small glass menu with the styles,
 switches for floating, vivid highlight and glass cards, the opacity, and a
-link to all settings. Settings apply to everyone, so only admins see it.
+link to all settings. Changes are for you only; admins can switch to
+*Everyone* to change the standard.
 
 ## Updates
 

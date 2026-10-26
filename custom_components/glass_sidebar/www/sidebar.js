@@ -3,9 +3,12 @@
   window.__glassSidebar = true;
 
   // Kept in step with VERSION in const.py; a newer server version reloads the page.
-  const scriptVersion = "1.6.0";
+  const scriptVersion = "1.7.0";
   const reloadKey = "glass-sidebar-reloaded-for";
   const cacheKey = "glass-sidebar-config";
+  const personalCacheKey = "glass-sidebar-personal";
+  // Each person's own style, in Home Assistant's per-user frontend data.
+  const userDataKey = "glass_sidebar";
   const collapsedKey = "glass-sidebar-collapsed";
   const sectionClass = "gs-section";
   const quickClass = "gs-quick";
@@ -16,7 +19,10 @@
 
   const sheets = new WeakMap();
   const watched = new WeakSet();
-  let config = readCachedConfig();
+  // shared: the standard from the server. personal: this user's own style.
+  let shared = readCachedConfig();
+  let personal = readJson(personalCacheKey);
+  let config = null;
   let collapsed = readJson(collapsedKey) || {};
   let frame = 0;
 
@@ -38,21 +44,56 @@
 
   const TEXT = {
     en: { quick: "Quick settings", style: "Style", floating: "Floating", vivid: "Vivid highlight",
+      me: "Just me", everyone: "Everyone", useStandard: "Use the standard", following: "Following the standard",
       cards: "Glass cards", opacity: "Opacity", all: "All settings", close: "Close",
-      presets: { frosted: "Frosted", midnight: "Midnight", vivid: "Vivid", aurora: "Aurora", minimal: "Minimal", solid: "Solid" } },
+      presets: { frosted: "Frosted", midnight: "Midnight", vivid: "Vivid", aurora: "Aurora", ocean: "Ocean", sunset: "Sunset",
+        forest: "Forest", rose: "Rose", graphite: "Graphite", mono: "Mono", minimal: "Minimal", solid: "Solid" } },
     nl: { quick: "Snel aanpassen", style: "Stijl", floating: "Zwevend", vivid: "Fel actief item",
+      me: "Alleen ik", everyone: "Iedereen", useStandard: "Standaard gebruiken", following: "Je volgt de standaard",
       cards: "Glazen kaarten", opacity: "Dekking", all: "Alle instellingen", close: "Sluiten",
-      presets: { frosted: "Frosted", midnight: "Midnight", vivid: "Vivid", aurora: "Aurora", minimal: "Minimaal", solid: "Effen" } },
+      presets: { frosted: "Frosted", midnight: "Midnight", vivid: "Vivid", aurora: "Aurora", ocean: "Oceaan", sunset: "Zonsondergang",
+        forest: "Bos", rose: "Roos", graphite: "Grafiet", mono: "Mono", minimal: "Minimaal", solid: "Effen" } },
   };
   const SWATCHES = {
     frosted: "linear-gradient(135deg, #F4F7FB, #DCE6F2)",
     midnight: "linear-gradient(135deg, #2A2F3A, #0E1220)",
     vivid: "linear-gradient(135deg, #29B6F6, #026592)",
     aurora: "linear-gradient(135deg, #9B7BFF, #3B2A7A)",
+    ocean: "linear-gradient(135deg, #4DB6AC, #00695C)",
+    sunset: "linear-gradient(135deg, #FF8A65, #AD1457)",
+    forest: "linear-gradient(135deg, #A5D6A7, #2E7D32)",
+    rose: "linear-gradient(135deg, #F8BBD0, #D81B60)",
+    graphite: "linear-gradient(135deg, #90A4AE, #263238)",
+    mono: "linear-gradient(135deg, #FFFFFF 50%, #212121 50%)",
     minimal: "linear-gradient(135deg, #FFFFFF, #EEF0F3)",
     solid: "linear-gradient(135deg, #FFFFFF, #CBD2DA)",
   };
-  const STYLE_KEYS = ["floating", "inset", "radius", "blur", "opacity", "tint", "highlight", "custom_accent", "accent_color"];
+  const STYLE_KEYS = ["floating", "inset", "radius", "blur", "opacity", "tint", "highlight", "selected_shape", "density",
+    "shadow", "glow", "icon_color", "custom_accent", "accent_color"];
+  // What a person may set for themselves; categories and the quick menu switch stay shared.
+  const PERSONAL_KEYS = [...STYLE_KEYS, "hover_motion", "glass_cards", "extend_background", "mobile_width", "mobile_blur",
+    "mobile_text_size", "mobile_rounded", "mobile_swipe", "mobile_hide_header"];
+  const ROW_HEIGHTS = { compact: 34, normal: 40, spacious: 48 };
+  const SHADOWS = {
+    none: "none",
+    soft: "0 1px 2px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.12)",
+    deep: "0 2px 6px rgba(0, 0, 0, 0.1), 0 28px 64px rgba(0, 0, 0, 0.32)",
+  };
+  const ACCENT = "var(--sidebar-selected-icon-color, var(--primary-color))";
+
+  const pick = (values, keys) => Object.fromEntries(keys.filter((key) => key in (values || {})).map((key) => [key, values[key]]));
+
+  // The look this user sees: the standard, with their own choices on top.
+  function merge() {
+    if (!shared?.enabled || !personal?.use_own) return shared;
+    const own = pick(personal.values, PERSONAL_KEYS);
+    const result = { ...shared, ...own };
+    if ("custom_accent" in own) {
+      const color = own.accent_color || [3, 169, 244];
+      result.accent = own.custom_accent ? `rgb(${color.join(", ")})` : null;
+    }
+    return result;
+  }
 
   // ha-sidebar lives two shadow roots deep:
   // home-assistant > #shadow > home-assistant-main > #shadow > ha-drawer > ha-sidebar
@@ -221,6 +262,12 @@
     // Rows grow with the text but stay a comfortable touch target.
     const mobileItemHeight = Math.max(44, Math.round(mobileText * 3));
     const mobileRadius = phoneRounded() ? radius : 0;
+    const shadow = SHADOWS[config.shadow] ?? SHADOWS.soft;
+    // A soft accent light in the top corner of the glass.
+    const glow = config.glow
+      ? `radial-gradient(130% 55% at 0% 0%, color-mix(in srgb, ${ACCENT} 26%, transparent), transparent 70%), `
+      : "";
+    const rowHeight = ROW_HEIGHTS[config.density] ?? ROW_HEIGHTS.normal;
     return `
       :host {
         ${tint()?.vars ?? ""}
@@ -231,14 +278,14 @@
                --sidebar-selected-text-color: ${config.accent};`
             : ""
         }
-        background: ${glassBackground(opacity)} !important;
+        background: ${glow}${glassBackground(opacity)} !important;
         -webkit-backdrop-filter: blur(${config.blur}px) saturate(1.5) !important;
         backdrop-filter: blur(${config.blur}px) saturate(1.5) !important;
         border-radius: ${radius}px !important;
         ${
           config.floating
             ? `border: ${glassBorder} !important;
-               box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.12) !important;`
+               box-shadow: ${shadow} !important;`
             : ""
         }
       }
@@ -256,12 +303,12 @@
 
       @media ${phoneQuery} {
         :host([narrow]) {
-          background: ${glassBackground(Math.min(opacity + 12, 100))} !important;
+          background: ${glow}${glassBackground(Math.min(opacity + 12, 100))} !important;
           border-radius: ${mobileRadius}px !important;
           ${
             config.floating && phoneRounded()
               ? `border: ${glassBorder} !important;
-                 box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28) !important;`
+                 box-shadow: ${config.shadow === "none" ? "none" : "0 24px 60px rgba(0, 0, 0, 0.28)"} !important;`
               : ""
           }
         }
@@ -315,24 +362,22 @@
       ha-list-item-button {
         border-radius: ${itemRadius}px;
         --ha-list-item-focus-radius: ${itemRadius}px;
+        --ha-row-item-min-height: ${rowHeight}px;
+        ${config.density === "compact" ? "margin-bottom: 2px;" : ""}
       }
+
+      ${iconColorCss()}
 
       ha-list-item-button::part(base),
       ha-list-item-button::part(ripple) {
         border-radius: ${itemRadius}px;
       }
 
-      ha-list-item-button.selected::before {
-        border-radius: ${itemRadius}px;
-        background-color: var(--sidebar-selected-icon-color, var(--primary-color));
-        opacity: 0.14;
-      }
-
       ha-list-item-button.selected::part(headline) {
         font-weight: 600;
       }
 
-      ${config.highlight === "vivid" ? vividCss(itemRadius) : ""}
+      ${selectedCss(itemRadius)}
 
       ha-list-item-button ha-svg-icon[slot="start"],
       ha-list-item-button ha-icon[slot="start"] {
@@ -433,10 +478,59 @@
     `;
   }
 
+  function iconColorCss() {
+    const icons = 'ha-list-item-button:not(.selected) ha-svg-icon[slot="start"], ha-list-item-button:not(.selected) ha-icon[slot="start"]';
+    if (config.icon_color === "accent") return `${icons} { color: ${ACCENT}; }`;
+    if (config.icon_color === "muted") return `${icons} { color: var(--secondary-text-color); opacity: 0.7; }`;
+    return "";
+  }
+
+  // The selected item: a pill, a bar at the side or an outline; soft or vivid.
+  function selectedCss(itemRadius) {
+    const vivid = config.highlight === "vivid";
+    const shape = config.selected_shape ?? "pill";
+    if (shape === "bar") {
+      return `
+        ha-list-item-button.selected::before {
+          inset: 9px auto 9px 3px !important;
+          width: 4px;
+          border-radius: 4px;
+          opacity: 1;
+          background-color: ${ACCENT};
+          ${vivid ? `box-shadow: 0 0 10px 1px color-mix(in srgb, ${ACCENT} 70%, transparent);` : ""}
+        }
+        ha-list-item-button.selected::part(base) {
+          background-color: color-mix(in srgb, ${ACCENT} ${vivid ? 14 : 7}%, transparent);
+        }
+      `;
+    }
+    if (shape === "outline") {
+      return `
+        ha-list-item-button.selected::before {
+          border-radius: ${itemRadius}px;
+          opacity: 1;
+          background-color: transparent;
+          box-shadow: inset 0 0 0 ${vivid ? 2 : 1.5}px ${ACCENT}${vivid ? `, 0 0 16px -3px color-mix(in srgb, ${ACCENT} 70%, transparent)` : ""};
+        }
+        ha-list-item-button.selected::part(base) {
+          background-color: color-mix(in srgb, ${ACCENT} ${vivid ? 10 : 4}%, transparent);
+        }
+      `;
+    }
+    if (vivid) return vividCss(itemRadius);
+    return `
+      ha-list-item-button.selected::before {
+        border-radius: ${itemRadius}px;
+        background-color: ${ACCENT};
+        opacity: 0.14;
+      }
+    `;
+  }
+
   // A solid accent pill with a soft glow. HA's highlight layer sits above the
   // item content, so it is moved behind it before it becomes opaque.
   function vividCss(itemRadius) {
-    const accent = "var(--sidebar-selected-icon-color, var(--primary-color))";
+    const accent = ACCENT;
     return `
       ha-list-item-button.selected {
         isolation: isolate;
@@ -609,7 +703,7 @@
     const menu = sidebar.shadowRoot.querySelector(".menu");
     if (!menu) return;
     let button = menu.querySelector(`.${quickClass}`);
-    const wanted = enabled() && (config.quick_menu ?? true) && Boolean(hass()?.user?.is_admin);
+    const wanted = enabled() && (config.quick_menu ?? true) && Boolean(hass()?.user);
     if (!wanted) {
       button?.remove();
       if (quick) closeQuick();
@@ -680,6 +774,12 @@
     .range { display: flex; flex-direction: column; gap: 6px; }
     .range label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; }
     .range input { width: 100%; margin: 0; accent-color: var(--primary-color, #03A9F4); }
+    .scope { display: flex; gap: 4px; padding: 3px; border-radius: 11px; background: color-mix(in srgb, var(--primary-text-color, #000) 6%, transparent); }
+    .scope button { flex: 1; height: 32px; border: 0; border-radius: 8px; background: transparent; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--secondary-text-color, #5B6370); }
+    .scope button[aria-checked="true"] { background: var(--card-background-color, #fff); color: var(--primary-text-color, #1C1F24); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+    .standard { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--secondary-text-color, #5B6370); }
+    .link { border: 0; background: none; padding: 4px 0; cursor: pointer; color: var(--primary-color, #03A9F4); font-weight: 600; font-size: 12px; }
+    .styles.many { grid-template-columns: repeat(4, minmax(0, 1fr)); max-height: 212px; overflow-y: auto; padding: 2px; }
     .all { height: 44px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 12px; background: var(--primary-color, #03A9F4); color: var(--text-primary-color, #fff); font-weight: 600; cursor: pointer; }
     :focus-visible { outline: 2px solid var(--primary-color, #03A9F4); outline-offset: 2px; }
   `;
@@ -703,7 +803,7 @@
     card.setAttribute("aria-label", t.quick);
     root.append(card);
 
-    quick = { host, button, card, settings: null };
+    quick = { host, button, card, settings: null, scope: "me" };
     button.setAttribute("aria-expanded", "true");
     document.body.append(host);
     positionQuick();
@@ -738,13 +838,14 @@
   function renderQuick() {
     if (!quick?.settings) return;
     const t = text();
-    const { options, presets } = quick.settings;
+    const { presets } = quick.settings;
+    const mine = quick.scope === "me";
+    const options = mine ? personalView(quick.settings.options) : quick.settings.options;
+    const ownSwatch = "linear-gradient(135deg, var(--primary-color, #03A9F4), color-mix(in srgb, var(--primary-color, #03A9F4) 50%, black))";
     const styles = [
       ...Object.entries(presets).map(([id, values]) => ({ id, name: t.presets[id] ?? id, values, swatch: SWATCHES[id] })),
-      ...(options.custom_styles || []).map((style, i) => ({
-        id: `custom-${i}`, name: style.name, values: style.values,
-        swatch: "linear-gradient(135deg, var(--primary-color, #03A9F4), color-mix(in srgb, var(--primary-color, #03A9F4) 50%, black))",
-      })),
+      ...(quick.settings.options.custom_styles || []).map((style) => ({ name: style.name, values: style.values, swatch: ownSwatch })),
+      ...(mine ? personal?.custom_styles || [] : []).map((style) => ({ name: style.name, values: style.values, swatch: ownSwatch })),
     ];
     const card = quick.card;
     card.replaceChildren();
@@ -766,7 +867,7 @@
     styleLabel.className = "label";
     styleLabel.textContent = t.style;
     const grid = document.createElement("div");
-    grid.className = "styles";
+    grid.className = "styles many";
     for (const style of styles) {
       const item = document.createElement("button");
       item.type = "button";
@@ -829,13 +930,68 @@
       navigate(settingsPath);
     });
 
-    card.append(head, styleLabel, grid, toggles, range, all);
+    const parts = [head];
+    if (hass()?.user?.is_admin) {
+      // Admins choose whether a change is theirs or the standard for everyone.
+      const scope = document.createElement("div");
+      scope.className = "scope";
+      scope.setAttribute("role", "radiogroup");
+      for (const [value, label] of [["me", t.me], ["all", t.everyone]]) {
+        const option = document.createElement("button");
+        option.type = "button";
+        option.setAttribute("role", "radio");
+        option.setAttribute("aria-checked", String(quick.scope === value));
+        option.textContent = label;
+        option.addEventListener("click", () => {
+          quick.scope = value;
+          renderQuick();
+        });
+        scope.append(option);
+      }
+      parts.push(scope);
+    }
+    if (mine) {
+      const standard = document.createElement("div");
+      standard.className = "standard";
+      const note = document.createElement("span");
+      note.textContent = personal?.use_own ? "" : t.following;
+      standard.append(note);
+      if (personal?.use_own) {
+        const reset = document.createElement("button");
+        reset.type = "button";
+        reset.className = "link";
+        reset.textContent = t.useStandard;
+        reset.addEventListener("click", () => savePersonal({ ...personal, use_own: false }).then(renderQuick));
+        standard.append(reset);
+      }
+      parts.push(standard);
+    }
+    card.append(...parts, styleLabel, grid, toggles, range, all);
+  }
+
+  // What the personal controls show: your own values, or the standard you follow.
+  function personalView(standard) {
+    const own = personal?.use_own ? pick(personal.values, PERSONAL_KEYS) : {};
+    return { ...standard, ...own };
+  }
+
+  async function savePersonal(value) {
+    personal = value;
+    writeJson(personalCacheKey, personal);
+    config = merge();
+    schedule();
+    await hass().connection.sendMessagePromise({ type: "frontend/set_user_data", key: userDataKey, value });
   }
 
   async function updateQuick(changes) {
     if (!quick) return;
     try {
-      quick.settings = await hass().callWS({ type: "glass_sidebar/settings/update", changes });
+      if (quick.scope === "me") {
+        const values = { ...pick(personalView(quick.settings.options), PERSONAL_KEYS), ...pick(changes, PERSONAL_KEYS) };
+        await savePersonal({ ...(personal || {}), use_own: true, values });
+      } else {
+        quick.settings = await hass().callWS({ type: "glass_sidebar/settings/update", changes });
+      }
     } catch (err) {
       console.warn("Glass Sidebar: could not save", err);
     }
@@ -985,7 +1141,8 @@
 
   function setConfig(value) {
     if (value?.version && value.version !== scriptVersion) reloadForVersion(value.version);
-    config = value;
+    shared = value;
+    config = merge();
     writeJson(cacheKey, value);
     if (quick && !enabled()) closeQuick();
     schedule();
@@ -1000,6 +1157,18 @@
     connection
       .subscribeMessage(setConfig, { type: "glass_sidebar/subscribe" })
       .catch((err) => console.warn("Glass Sidebar: could not load settings", err));
+    // Your own style follows you to every device, and updates live.
+    connection
+      .subscribeMessage((msg) => setPersonal(msg?.value ?? null), { type: "frontend/subscribe_user_data", key: userDataKey })
+      .catch((err) => console.warn("Glass Sidebar: could not load your own style", err));
+  }
+
+  function setPersonal(value) {
+    personal = value;
+    writeJson(personalCacheKey, value);
+    config = merge();
+    if (quick) renderQuick();
+    schedule();
   }
 
   function start() {
@@ -1007,6 +1176,7 @@
       setTimeout(start, 200);
       return;
     }
+    config = merge();
     render();
     subscribe();
   }

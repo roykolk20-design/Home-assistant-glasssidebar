@@ -18,11 +18,14 @@ from .const import (
     CONF_BLUR,
     CONF_CATEGORIES,
     CONF_CUSTOM_ACCENT,
+    CONF_DENSITY,
     CONF_EXTEND_BACKGROUND,
     CONF_FLOATING,
     CONF_GLASS_CARDS,
+    CONF_GLOW,
     CONF_HIGHLIGHT,
     CONF_HOVER_MOTION,
+    CONF_ICON_COLOR,
     CONF_INSET,
     CONF_MOBILE_BLUR,
     CONF_MOBILE_HIDE_HEADER,
@@ -33,19 +36,27 @@ from .const import (
     CONF_OPACITY,
     CONF_QUICK_MENU,
     CONF_RADIUS,
+    CONF_SELECTED_SHAPE,
+    CONF_SHADOW,
     CONF_TINT,
     DEFAULTS,
+    DENSITIES,
     DOMAIN,
     HIGHLIGHTS,
+    ICON_COLORS,
     JS_PATH,
     JS_URL,
     PANEL_ELEMENT,
     PANEL_JS_PATH,
     PANEL_JS_URL,
     PANEL_URL_PATH,
+    PERSONAL_KEYS,
     PRESETS,
+    SHADOWS,
+    SHAPES,
     SIGNAL_UPDATE,
     TINTS,
+    USER_DATA_KEY,
     VERSION,
     current_options,
 )
@@ -82,6 +93,11 @@ def build_config(entry: ConfigEntry) -> dict[str, Any]:
         "opacity": int(options[CONF_OPACITY]),
         "tint": _choice(options, CONF_TINT, TINTS),
         "highlight": _choice(options, CONF_HIGHLIGHT, HIGHLIGHTS),
+        "selected_shape": _choice(options, CONF_SELECTED_SHAPE, SHAPES),
+        "density": _choice(options, CONF_DENSITY, DENSITIES),
+        "shadow": _choice(options, CONF_SHADOW, SHADOWS),
+        "glow": bool(options[CONF_GLOW]),
+        "icon_color": _choice(options, CONF_ICON_COLOR, ICON_COLORS),
         "accent": _accent(options),
         "hover_motion": bool(options[CONF_HOVER_MOTION]),
         "glass_cards": bool(options[CONF_GLASS_CARDS]),
@@ -132,11 +148,12 @@ def _settings_result(entry: ConfigEntry) -> dict[str, Any]:
         "options": current_options(entry.options),
         "defaults": DEFAULTS,
         "presets": PRESETS,
+        "personal_keys": list(PERSONAL_KEYS),
+        "user_data_key": USER_DATA_KEY,
         "version": VERSION,
     }
 
 
-@websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required("type"): f"{DOMAIN}/settings"})
 @callback
 def ws_settings(
@@ -189,13 +206,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     add_extra_js_url(hass, JS_URL)
     # No sidebar title, so it stays out of the sidebar. The integration's
-    # Configure button opens it, because of config_panel_domain.
+    # Configure button opens it, because of config_panel_domain. Everyone may
+    # open it for their own style; shared settings stay admin-only.
     await panel_custom.async_register_panel(
         hass,
         frontend_url_path=PANEL_URL_PATH,
         webcomponent_name=PANEL_ELEMENT,
         module_url=PANEL_JS_URL,
-        require_admin=True,
+        require_admin=False,
         config_panel_domain=DOMAIN,
     )
     entry.async_on_unload(entry.add_update_listener(async_options_updated))

@@ -12,9 +12,24 @@
       styleName: "Name of the style", save: "Save", remove: "Remove",
       presets: {
         frosted: ["Frosted", "Light glass, soft tint"], midnight: ["Midnight", "Dark glass for the evening"],
-        vivid: ["Vivid", "Vivid highlight with glow"], aurora: ["Aurora", "Purple accent on dark glass"],
+        vivid: ["Vivid", "Vivid highlight with a warm glow"], aurora: ["Aurora", "Purple light on dark glass"],
+        ocean: ["Ocean", "Teal accent with a bar"], sunset: ["Sunset", "Orange glow on dark glass"],
+        forest: ["Forest", "Green outline, roomy"], rose: ["Rose", "Pink pill, extra round"],
+        graphite: ["Graphite", "Calm, dark and compact"], mono: ["Mono", "Black and white, crisp"],
         minimal: ["Minimal", "Attached to the edge, no glass"], solid: ["Solid", "Floating, not see-through"],
       },
+      scopeMe: "Just for me", scopeAll: "Standard for everyone",
+      followNote: "You follow the standard. As soon as you change something, it becomes your own style, on all your devices.",
+      ownNote: "You use your own style. Only you see it, on all your devices.",
+      allNote: "This is the standard for everyone who hasn't chosen their own style.",
+      backToStandard: "Back to the standard", sharedStyles: "Styles for everyone", myStyles: "My styles",
+      catShared: "Categories are the same for everyone. An admin sets them up under Standard for everyone.",
+      toShared: "Go to Standard for everyone",
+      shape: "Selected item shape", shapes: { pill: "Pill", bar: "Bar", outline: "Outline" },
+      density: "Spacing", densities: { compact: "Compact", normal: "Normal", spacious: "Roomy" },
+      shadow: "Shadow", shadows: { none: "None", soft: "Soft", deep: "Deep" },
+      glow: ["Accent glow", "A soft light of your accent color in the glass"],
+      iconColor: "Icon color", iconColors: { theme: "Theme", accent: "Accent", muted: "Muted" },
       floating: ["Floating", "A separate panel with space around it"],
       inset: "Distance to screen edge", radius: "Corner radius", blur: "Blur", opacity: "Opacity",
       tint: "Glass tint", tints: { theme: "Theme", light: "Light", dark: "Dark" },
@@ -49,9 +64,24 @@
       styleName: "Naam van de stijl", save: "Bewaren", remove: "Verwijderen",
       presets: {
         frosted: ["Frosted", "Licht glas, zachte tint"], midnight: ["Midnight", "Donker glas voor de avond"],
-        vivid: ["Vivid", "Fel actief item met gloed"], aurora: ["Aurora", "Paars accent op donker glas"],
+        vivid: ["Vivid", "Fel actief item met warme gloed"], aurora: ["Aurora", "Paars licht op donker glas"],
+        ocean: ["Oceaan", "Turquoise accent met balkje"], sunset: ["Zonsondergang", "Oranje gloed op donker glas"],
+        forest: ["Bos", "Groene omlijning, ruim"], rose: ["Roos", "Roze pil, extra rond"],
+        graphite: ["Grafiet", "Rustig, donker en compact"], mono: ["Mono", "Zwart-wit, strak"],
         minimal: ["Minimaal", "Vast aan de rand, geen glas"], solid: ["Effen", "Zwevend, maar niet doorschijnend"],
       },
+      scopeMe: "Alleen voor mij", scopeAll: "Standaard voor iedereen",
+      followNote: "Je volgt de standaard. Zodra je iets aanpast, wordt het je eigen stijl, op al je apparaten.",
+      ownNote: "Je gebruikt je eigen stijl. Alleen jij ziet die, op al je apparaten.",
+      allNote: "Dit is de standaard voor iedereen die geen eigen stijl heeft gekozen.",
+      backToStandard: "Terug naar de standaard", sharedStyles: "Stijlen voor iedereen", myStyles: "Mijn stijlen",
+      catShared: "Categorieën zijn voor iedereen hetzelfde. Een beheerder stelt ze in bij Standaard voor iedereen.",
+      toShared: "Naar Standaard voor iedereen",
+      shape: "Vorm van het actieve item", shapes: { pill: "Pil", bar: "Balkje", outline: "Omlijning" },
+      density: "Ruimte", densities: { compact: "Compact", normal: "Normaal", spacious: "Ruim" },
+      shadow: "Schaduw", shadows: { none: "Geen", soft: "Zacht", deep: "Diep" },
+      glow: ["Accent-gloed", "Een zacht licht in je accentkleur in het glas"],
+      iconColor: "Kleur van de iconen", iconColors: { theme: "Thema", accent: "Accent", muted: "Gedempt" },
       floating: ["Zwevend", "Losse balk met ruimte rondom"],
       inset: "Afstand tot rand", radius: "Hoekradius", blur: "Vervaging", opacity: "Dekking",
       tint: "Kleur van het glas", tints: { theme: "Thema", light: "Licht", dark: "Donker" },
@@ -83,11 +113,19 @@
     frosted: "linear-gradient(135deg, #F4F7FB, #DCE6F2)", midnight: "linear-gradient(135deg, #2A2F3A, #0E1220)",
     vivid: "linear-gradient(135deg, #29B6F6, #026592)", aurora: "linear-gradient(135deg, #9B7BFF, #3B2A7A)",
     minimal: "linear-gradient(135deg, #FFFFFF, #EEF0F3)", solid: "linear-gradient(135deg, #FFFFFF, #CBD2DA)",
+    ocean: "linear-gradient(135deg, #4DB6AC, #00695C)", sunset: "linear-gradient(135deg, #FF8A65, #AD1457)",
+    forest: "linear-gradient(135deg, #A5D6A7, #2E7D32)", rose: "linear-gradient(135deg, #F8BBD0, #D81B60)",
+    graphite: "linear-gradient(135deg, #90A4AE, #263238)", mono: "linear-gradient(135deg, #FFFFFF 50%, #212121 50%)",
   };
   const ACCENTS = [[3, 169, 244], [0, 150, 136], [76, 175, 80], [255, 152, 0], [244, 67, 54], [233, 30, 99], [124, 92, 255], [96, 125, 139]];
   const ICONS = ["mdi:view-dashboard", "mdi:home", "mdi:sofa", "mdi:bed", "mdi:lightbulb", "mdi:flash", "mdi:chart-line",
     "mdi:history", "mdi:shield-home", "mdi:robot", "mdi:music", "mdi:calendar", "mdi:folder", "mdi:tools", "mdi:cog", "mdi:star"];
-  const STYLE_KEYS = ["floating", "inset", "radius", "blur", "opacity", "tint", "highlight", "custom_accent", "accent_color"];
+  const STYLE_KEYS = ["floating", "inset", "radius", "blur", "opacity", "tint", "highlight", "selected_shape", "density",
+    "shadow", "glow", "icon_color", "custom_accent", "accent_color"];
+  const PERSONAL_KEYS = [...STYLE_KEYS, "hover_motion", "glass_cards", "extend_background", "mobile_width", "mobile_blur",
+    "mobile_text_size", "mobile_rounded", "mobile_swipe", "mobile_hide_header"];
+  const ROWS = { compact: 34, normal: 40, spacious: 48 };
+  const pick = (values, keys) => Object.fromEntries(keys.filter((key) => key in (values || {})).map((key) => [key, values[key]]));
   const HIDDEN_PANELS = ["config", "profile", "notfound", "glass-sidebar"];
 
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -211,12 +249,17 @@
     .grip:active { cursor: grabbing; }
     .panel-row.dragging { opacity: .35; }
     .drop-line { height: 3px; margin: 1px 6px; border-radius: 2px; background: var(--primary-color); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent); }
-    .ghost { position: fixed; z-index: 1000; pointer-events: none; width: 260px; transform: rotate(-2deg); background: var(--card-background-color); box-shadow: 0 18px 40px rgba(0,0,0,.28), 0 0 0 2px var(--primary-color); }
+    .drag-ghost { position: fixed; z-index: 1000; pointer-events: none; width: 260px; transform: rotate(-2deg); background: var(--card-background-color); box-shadow: 0 18px 40px rgba(0,0,0,.28), 0 0 0 2px var(--primary-color); }
     .side-preview { padding: 12px 8px; border-radius: 20px; display: flex; flex-direction: column; gap: 2px; background: color-mix(in srgb, var(--card-background-color) 80%, transparent);
       border: 1px solid color-mix(in srgb, var(--divider-color) 70%, transparent); position: sticky; top: 12px; }
     .side-preview .item { height: 30px; display: flex; align-items: center; padding: 0 10px; border-radius: 9px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .side-preview .head { display: flex; justify-content: space-between; padding: 10px 10px 2px; font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--secondary-text-color); }
     .tip { font-size: 13px; color: var(--secondary-text-color); }
+    .scope-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .note { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; border-radius: 14px; font-size: 14px;
+      background: color-mix(in srgb, var(--primary-color) 10%, transparent); }
+    .note span { flex: 1; min-width: 220px; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; flex: none; margin-right: 6px; }
     .loading { padding: 48px; text-align: center; color: var(--secondary-text-color); }
     .menu-fallback { width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
     @media (prefers-reduced-motion: reduce) { .switch, .switch::before { transition: none; } }
@@ -235,6 +278,8 @@
       this._iconFor = -1;
       this._nameErrors = {};
       this._drag = null;
+      this._scope = "me";
+      this._personal = null;
       this.shadowRoot.addEventListener("click", (ev) => this._onClick(ev));
       this.shadowRoot.addEventListener("input", (ev) => this._onInput(ev));
       this.shadowRoot.addEventListener("change", (ev) => this._onChange(ev));
@@ -257,6 +302,15 @@
       this._render();
     }
 
+    disconnectedCallback() {
+      this._unsubPersonal?.then((unsub) => unsub()).catch(() => {});
+      this._unsubPersonal = null;
+    }
+
+    connectedCallback() {
+      if (this._hass && !this._unsubPersonal) this._subscribePersonal();
+    }
+
     set panel(_panel) {}
     set route(_route) {}
 
@@ -264,11 +318,34 @@
       return TEXT[(this._hass?.language || "en").startsWith("nl") ? "nl" : "en"];
     }
 
+    get _admin() {
+      return Boolean(this._hass?.user?.is_admin);
+    }
+
+    get _mine() {
+      return this._scope === "me" || !this._admin;
+    }
+
+    // Your own values, or the standard you follow until you change something.
+    _personalValues() {
+      return this._personal?.use_own ? pick(this._personal.values, PERSONAL_KEYS) : pick(this._settings.options, PERSONAL_KEYS);
+    }
+
     get _o() {
-      return { ...this._settings.options, ...this._pending };
+      if (!this._mine) return { ...this._settings.options, ...this._pending };
+      return { ...this._settings.options, ...this._personalValues(), ...this._pending };
+    }
+
+    _subscribePersonal() {
+      this._unsubPersonal = this._hass.connection.subscribeMessage((msg) => {
+        this._personal = msg?.value ?? null;
+        if (this._settings && !this._drag && !Object.keys(this._pending).length) this._render();
+      }, { type: "frontend/subscribe_user_data", key: "glass_sidebar" });
+      this._unsubPersonal.catch(() => {});
     }
 
     async _load() {
+      this._subscribePersonal();
       try {
         this._settings = await this._hass.callWS({ type: "glass_sidebar/settings" });
         this._error = null;
@@ -293,6 +370,17 @@
       if (!Object.keys(changes).length) return;
       this._pending = {};
       try {
+        if (this._mine) {
+          const style = pick(changes, PERSONAL_KEYS);
+          const current = this._personal || {};
+          const next = { ...current, use_own: current.use_own || Object.keys(style).length > 0,
+            values: { ...this._personalValues(), ...style } };
+          if ("custom_styles" in changes) next.custom_styles = changes.custom_styles;
+          this._personal = next;
+          await this._hass.connection.sendMessagePromise({ type: "frontend/set_user_data", key: "glass_sidebar", value: next });
+          this._setStatus(Object.keys(this._pending).length ? "saving" : "saved");
+          return;
+        }
         this._settings = await this._hass.callWS({ type: "glass_sidebar/settings/update", changes });
         this._setStatus(Object.keys(this._pending).length ? "saving" : "saved");
       } catch (err) {
@@ -335,6 +423,7 @@
             <div class="titles"><h1>Glass Sidebar</h1><span class="muted">${esc(t.subtitle)} · ${esc(this._settings.version)}</span></div>
             <span class="status" data-status role="status"></span>
           </header>
+          ${this._scopeHTML()}
           <div class="tabs" role="tablist" aria-label="Glass Sidebar">${tabs}</div>
           <div id="tabpanel" role="tabpanel" aria-labelledby="tab-${this._tab}">${this[`_${this._tab}Tab`](o)}</div>
         </div>`;
@@ -342,6 +431,18 @@
       this._syncMenuButton();
       this._updatePreview();
       if (focus) root.querySelector(`[data-f="${CSS.escape(focus)}"]`)?.focus();
+    }
+
+    _scopeHTML() {
+      const t = this._t;
+      const own = this._personal?.use_own;
+      const seg = this._admin ? `<div class="seg" role="radiogroup" aria-label="${esc(t.scopeMe)} / ${esc(t.scopeAll)}">
+        ${[["me", t.scopeMe], ["all", t.scopeAll]].map(([value, label]) =>
+          `<button type="button" role="radio" aria-checked="${(value === "me") === this._mine}" data-action="scope" data-value="${value}" data-f="scope-${value}">${esc(label)}</button>`).join("")}</div>` : "";
+      const note = !this._mine ? `<span>${esc(t.allNote)}</span>`
+        : own ? `<span>${esc(t.ownNote)}</span><button type="button" class="btn ghost" data-action="to-standard" data-f="to-standard">${esc(t.backToStandard)}</button>`
+        : `<span>${esc(t.followNote)}</span>`;
+      return `<div class="scope-bar">${seg}</div><div class="note" role="status">${note}</div>`;
     }
 
     _focusKey(el) {
@@ -407,20 +508,23 @@
           <span class="preset-text"><span class="text"><span class="name">${esc(name)}</span><span class="hint">${esc(text)}</span></span>
           ${chosen ? `<span class="badge">${svg(ICON.check, 14, 2.6)}${esc(t.chosen)}</span>` : ""}</span></button>`;
       }).join("");
-      const custom = (o.custom_styles || []).map((style, index) => {
+      const styleCard = (style, index, source, removable) => {
         const chosen = this._isStyle(o, style.values);
         return `<div style="position: relative">
-          <button type="button" class="preset" style="width: 100%" aria-pressed="${chosen}" data-action="apply-style" data-index="${index}" data-f="custom-${index}">
+          <button type="button" class="preset" style="width: 100%" aria-pressed="${chosen}" data-action="apply-style" data-index="${index}" data-source="${source}" data-f="${source}-${index}">
             ${this._sceneHTML({ ...o, ...style.values }, { theme: style.values.tint === "dark" ? "dark" : "light", small: true })}
             <span class="preset-text"><span class="text"><span class="name">${esc(style.name)}</span></span>${chosen ? `<span class="badge">${svg(ICON.check, 14, 2.6)}${esc(t.chosen)}</span>` : ""}</span>
           </button>
-          <button type="button" class="icon-btn" style="position: absolute; top: 8px; right: 8px; background: var(--card-background-color)" aria-label="${esc(t.remove)}: ${esc(style.name)}" data-action="delete-style" data-index="${index}" data-f="del-style-${index}">${svg(ICON.trash, 18, 1.8)}</button>
+          ${removable ? `<button type="button" class="icon-btn" style="position: absolute; top: 8px; right: 8px; background: var(--card-background-color)" aria-label="${esc(t.remove)}: ${esc(style.name)}" data-action="delete-style" data-index="${index}" data-source="${source}" data-f="del-${source}-${index}">${svg(ICON.trash, 18, 1.8)}</button>` : ""}
         </div>`;
-      }).join("");
+      };
+      const shared = (this._settings.options.custom_styles || []).map((s, i) => styleCard(s, i, "shared", !this._mine)).join("");
+      const mine = this._mine ? (this._personal?.custom_styles || []).map((s, i) => styleCard(s, i, "mine", true)).join("") : "";
       return `<div style="display: flex; flex-direction: column; gap: 18px">
         <div><h2>${esc(t.styleTitle)}</h2><p class="muted" style="margin: 4px 0 0">${esc(t.styleIntro)}</p></div>
         <div class="grid3">${presets}</div>
-        ${custom ? `<h2>${esc(t.yourStyles)}</h2><div class="grid3">${custom}</div>` : ""}
+        ${mine ? `<h2>${esc(t.myStyles)}</h2><div class="grid3">${mine}</div>` : ""}
+        ${shared ? `<h2>${esc(t.sharedStyles)}</h2><div class="grid3">${shared}</div>` : ""}
         <div class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 10px">
           <label class="name" for="style-name">${esc(t.saveStyle)}</label>
           <div class="style-actions"><input id="style-name" class="text-input" maxlength="40" placeholder="${esc(t.styleName)}" data-f="style-name">
@@ -440,9 +544,13 @@
         ${this._sliderRow("opacity", t.opacity, 40, 100, "%", o)}
         ${this._segRow("tint", t.tint, t.tints, o)}
         ${this._segRow("highlight", t.highlight, t.highlights, o)}
+        ${this._segRow("selected_shape", t.shape, t.shapes, o)}
+        ${this._segRow("density", t.density, t.densities, o)}
+        ${this._segRow("shadow", t.shadow, t.shadows, o)}
+        ${this._toggleRow("glow", t.glow, o)}
         ${this._toggleRow("hover_motion", t.hover, o)}
         ${this._toggleRow("glass_cards", t.cards, o)}
-        ${this._toggleRow("quick_menu", t.quick, o)}
+        ${this._mine ? "" : this._toggleRow("quick_menu", t.quick, o)}
       </section>${this._previewCard("desktop")}</div>`;
     }
 
@@ -454,6 +562,7 @@
         ${this._toggleRow("custom_accent", t.customAccent, o)}
         <div class="row col"><span class="name">${esc(t.accent)}</span>
           <div class="swatches">${swatches}<input type="color" aria-label="${esc(t.pickColor)}" value="${hex(o.accent_color)}" data-key="accent_color" data-color data-f="color-input"></div></div>
+        ${this._segRow("icon_color", t.iconColor, t.iconColors, o)}
       </section>${this._previewCard("desktop")}</div>`;
     }
 
@@ -487,6 +596,11 @@
 
     _categoriesTab(o) {
       const t = this._t;
+      if (this._mine) {
+        return `<div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start">
+          <h2>${esc(t.tabs.categories)}</h2><p class="muted" style="margin: 0">${esc(t.catShared)}</p>
+          ${this._admin ? `<button type="button" class="btn primary" data-action="scope" data-value="all" data-f="to-shared">${esc(t.toShared)}</button>` : ""}</div>`;
+      }
       const panels = this._panelList();
       const byId = new Map(panels.map((p) => [p.id, p]));
       const placed = new Set(o.categories.flatMap((c) => c.panels));
@@ -561,15 +675,28 @@
       const dark = o.tint === "dark" || (o.tint === "theme" && theme === "dark");
       const base = o.tint === "light" ? "#ffffff" : dark ? "#16181d" : "#ffffff";
       const accent = o.custom_accent ? rgb(o.accent_color) : "#03A9F4";
+      const vivid = o.highlight === "vivid";
+      const shape = o.selected_shape || "pill";
+      const soft = `color: color-mix(in srgb, ${accent} ${dark ? "55%, white" : "60%, black"}); font-weight: 600;`;
+      const selected = shape === "bar"
+        ? `${soft} background: color-mix(in srgb, ${accent} ${vivid ? 14 : 7}%, transparent); box-shadow: inset 3px 0 0 ${accent}${vivid ? `, -2px 0 10px -2px ${accent}` : ""}`
+        : shape === "outline"
+          ? `${soft} background: color-mix(in srgb, ${accent} ${vivid ? 10 : 4}%, transparent); box-shadow: inset 0 0 0 ${vivid ? 2 : 1.5}px ${accent}${vivid ? `, 0 0 12px -3px ${accent}` : ""}`
+          : vivid
+            ? `color: #fff; font-weight: 600; background: linear-gradient(135deg, color-mix(in srgb, ${accent} 78%, black), color-mix(in srgb, ${accent} 60%, black)); box-shadow: 0 4px 12px -3px color-mix(in srgb, ${accent} 70%, transparent)`
+            : `${soft} background: color-mix(in srgb, ${accent} ${dark ? 24 : 15}%, transparent)`;
+      const icon = o.icon_color === "accent" ? accent : o.icon_color === "muted" ? (dark ? "rgba(236,238,242,.45)" : "rgba(28,31,36,.4)") : (dark ? "#A9B1BE" : "#4B5563");
       return {
         dark,
+        icon,
+        rowScale: (ROWS[o.density] || 40) / 40,
+        shadow: { none: "none", soft: "0 10px 24px rgba(0,0,0,.18)", deep: "0 18px 40px rgba(0,0,0,.38)" }[o.shadow || "soft"],
+        glow: o.glow ? `radial-gradient(130% 55% at 0% 0%, color-mix(in srgb, ${accent} 30%, transparent), transparent 70%), ` : "",
         glass: `color-mix(in srgb, ${base} ${o.opacity}%, transparent)`,
         text: dark ? "#ECEEF2" : "#1C1F24",
         tile: dark ? "rgba(30,33,40,.6)" : "rgba(255,255,255,.7)",
         accent,
-        selected: o.highlight === "vivid"
-          ? `color: #fff; font-weight: 600; background: linear-gradient(135deg, color-mix(in srgb, ${accent} 78%, black), color-mix(in srgb, ${accent} 60%, black)); box-shadow: 0 4px 12px -3px color-mix(in srgb, ${accent} 70%, transparent)`
-          : `color: color-mix(in srgb, ${accent} ${dark ? "55%, white" : "60%, black"}); font-weight: 600; background: color-mix(in srgb, ${accent} ${dark ? 24 : 15}%, transparent)`,
+        selected,
       };
     }
 
@@ -586,17 +713,18 @@
           if (!c.collapsed) rows.push(...items.map((id) => ({ label: byId.get(id).title })));
         }
       }
+      const height = (base) => `height: ${Math.round(base * colors.rowScale)}px;`;
       return rows.slice(0, headers ? 40 : limit).map((r, i) => r.head
         ? `<div class="head"><span>${esc(r.head)}</span><span>${r.collapsed ? "›" : "⌄"}</span></div>`
-        : `<div class="item" style="${i === 0 ? colors.selected : `color: ${colors.text}`}">${esc(r.label)}</div>`).join("");
+        : `<div class="item" style="${height(headers ? 30 : 26)} ${i === 0 ? colors.selected : `color: ${colors.text}`}"><span class="dot" style="background: ${i === 0 && colors.selected.includes("#fff") ? "#fff" : colors.icon}"></span>${esc(r.label)}</div>`).join("");
     }
 
     _sceneHTML(o, { theme = this._previewTheme, small = false } = {}) {
       const c = this._colors(o, theme);
       const scale = small ? 0.6 : 0.8;
       const radius = o.floating ? Math.round(o.radius * scale) : 0;
-      const bar = `background: ${c.glass}; border-radius: ${radius}px; ${o.blur ? `backdrop-filter: blur(${Math.round(o.blur * scale)}px) saturate(1.5); -webkit-backdrop-filter: blur(${Math.round(o.blur * scale)}px) saturate(1.5);` : ""}
-        ${o.floating ? `border: 1px solid ${c.dark ? "rgba(255,255,255,.1)" : "rgba(255,255,255,.9)"}; box-shadow: 0 10px 24px rgba(0,0,0,.18);` : `margin: ${small ? "-10px" : "-14px"} 0 ${small ? "-10px" : "-14px"} ${small ? "-10px" : "-14px"};`}`;
+      const bar = `background: ${c.glow}${c.glass}; border-radius: ${radius}px; ${o.blur ? `backdrop-filter: blur(${Math.round(o.blur * scale)}px) saturate(1.5); -webkit-backdrop-filter: blur(${Math.round(o.blur * scale)}px) saturate(1.5);` : ""}
+        ${o.floating ? `border: 1px solid ${c.dark ? "rgba(255,255,255,.1)" : "rgba(255,255,255,.9)"}; box-shadow: ${c.shadow};` : `margin: ${small ? "-10px" : "-14px"} 0 ${small ? "-10px" : "-14px"} ${small ? "-10px" : "-14px"};`}`;
       const tiles = Array.from({ length: small ? 4 : 6 }, () => `<span class="tile" style="background: ${c.tile}"></span>`).join("");
       return `<div class="scene${c.dark ? " dark" : ""}" style="${o.floating ? `padding: ${Math.round(o.inset * scale) + (small ? 6 : 8)}px` : ""}">
         <div class="mini" style="${bar}">${this._miniItems(o, c, { limit: small ? 5 : 8 })}</div>
@@ -662,12 +790,26 @@
           this._change({ [el.dataset.key]: el.dataset.value });
           this._render();
           break;
+        case "scope":
+          clearTimeout(this._saveTimer);
+          this._save();
+          this._scope = el.dataset.value;
+          this._render();
+          break;
+        case "to-standard":
+          this._pending = {};
+          this._personal = { ...(this._personal || {}), use_own: false };
+          this._hass.connection.sendMessagePromise({ type: "frontend/set_user_data", key: "glass_sidebar", value: this._personal });
+          this._setStatus("saved");
+          this._render();
+          break;
         case "preview-theme":
           this._previewTheme = el.dataset.value;
           this._render();
           break;
         case "apply-style": {
-          const values = el.dataset.preset ? this._settings.presets[el.dataset.preset] : o.custom_styles[Number(el.dataset.index)].values;
+          const list = el.dataset.source === "mine" ? this._personal?.custom_styles : this._settings.options.custom_styles;
+          const values = el.dataset.preset ? this._settings.presets[el.dataset.preset] : list[Number(el.dataset.index)].values;
           this._change({ ...values });
           this._render();
           break;
@@ -675,7 +817,7 @@
         case "save-style": {
           const input = this.shadowRoot.getElementById("style-name");
           const name = input.value.trim();
-          const styles = o.custom_styles || [];
+          const styles = (this._mine ? this._personal?.custom_styles : this._settings.options.custom_styles) || [];
           if (!name) this._styleError = t.nameEmpty;
           else if (styles.some((s) => s.name.toLowerCase() === name.toLowerCase())) this._styleError = t.styleTaken;
           else {
@@ -686,10 +828,12 @@
           this._render();
           break;
         }
-        case "delete-style":
-          this._change({ custom_styles: o.custom_styles.filter((_, i) => i !== Number(el.dataset.index)) });
+        case "delete-style": {
+          const list = (el.dataset.source === "mine" ? this._personal?.custom_styles : this._settings.options.custom_styles) || [];
+          this._change({ custom_styles: list.filter((_, i) => i !== Number(el.dataset.index)) });
           this._render();
           break;
+        }
         case "accent":
           this._change({ custom_accent: true, accent_color: el.dataset.value.split(",").map(Number) });
           this._render();
@@ -836,7 +980,7 @@
         drag.row.classList.add("dragging");
         drag.ghost = drag.row.cloneNode(true);
         drag.ghost.classList.remove("dragging");
-        drag.ghost.classList.add("ghost");
+        drag.ghost.classList.add("drag-ghost");
         drag.ghost.setAttribute("aria-hidden", "true");
         this.shadowRoot.append(drag.ghost);
       }

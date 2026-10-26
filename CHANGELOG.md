@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.7.0]
+
+### New
+
+- **Your own style, per person.** Everyone can choose their own colors and
+  look under *Just for me*. It's stored with your Home Assistant account, so it
+  follows you to every device. What an admin sets under *Standard for
+  everyone* is what everyone else sees.
+- **Six new styles**: Ocean, Sunset, Forest, Rose, Graphite and Mono.
+- **Design details**: selected item as pill, bar or outline; compact, normal
+  or roomy spacing; no, soft or deep shadow; accent glow in the glass; theme,
+  accent or muted icons.
+- The settings page and the quick menu are now available to everyone, for
+  their own style. Categories stay shared and admin-only.
+
 ## [1.6.0]
 
 - **Background behind the sidebar.** Your dashboard background (from your
