@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1]
+
+- Ready for the Home Assistant Marketplace (built in from Home Assistant
+  2026.11) and the HACS default list: all HACS and hassfest checks pass without
+  exceptions.
+- README: how to install and update through the Marketplace.
+
 ## [1.2.0]
 
 ### New

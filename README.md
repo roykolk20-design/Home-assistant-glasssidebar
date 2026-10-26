@@ -3,7 +3,7 @@
 # Glass Sidebar for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
-![Version](https://img.shields.io/badge/version-1.2.0-03A9F4)
+![Version](https://img.shields.io/badge/version-1.2.1-03A9F4)
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.10%2B-18BCF2)
 
 A modern, glass-style sidebar for Home Assistant. It turns the left navigation
@@ -50,7 +50,15 @@ is configured entirely from the UI. No YAML, no extra frontend resources.
 
 ## Installation
 
-### HACS (recommended)
+### Marketplace (Home Assistant 2026.11 and newer)
+
+From Home Assistant 2026.11, HACS is built in as the **Marketplace** under
+**Settings → Marketplace**. Search for **Glass Sidebar** there. If it isn't
+listed yet, add this repository as a custom repository with type
+**Integration**, the same way as described for HACS below. If you installed it
+through HACS before, it carries over automatically and keeps getting updates.
+
+### HACS (Home Assistant 2026.10 and older)
 
 [![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=roykolk20-design&repository=Home-assistant-glasssidebar&category=integration)
 

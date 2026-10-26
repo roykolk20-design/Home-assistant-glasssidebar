@@ -14,8 +14,6 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
-          # Not in home-assistant/brands yet; the integration ships its own brand/ folder.
-          ignore: brands
 
   hassfest:
     runs-on: ubuntu-latest
