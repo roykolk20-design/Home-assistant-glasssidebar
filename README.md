@@ -3,7 +3,7 @@
 # Glass Sidebar for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
-![Version](https://img.shields.io/badge/version-1.1.1-03A9F4)
+![Version](https://img.shields.io/badge/version-1.2.0-03A9F4)
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.10%2B-18BCF2)
 
 A modern, glass-style sidebar for Home Assistant. It turns the left navigation
@@ -23,18 +23,22 @@ is configured entirely from the UI. No YAML, no extra frontend resources.
 - **Floating glass panel** with configurable distance to the screen edge,
   corner radius and blur.
 - **Categories**: group panels under your own headings, such as
-  *Dashboards* and *Insight*. Collapsed, each heading becomes a thin divider.
-- **Theme aware**: uses your theme's sidebar, divider and accent colors, so it
-  looks right in light and dark themes.
-- **Bigger mobile drawer**: on phones the menu opens wider, with larger touch
-  targets and a blurred page behind it. Tablets and desktops keep the normal
-  layout.
-- **Subtle motion**: icons slide slightly on hover. Turned off automatically
-  when your device asks for reduced motion.
-- **Live settings**: changes in the options dialog apply immediately in every
-  open browser, without a reload.
+  *Dashboards* and *Insight*, picked from a list of your panels. Collapsed,
+  each heading becomes a thin divider.
+- **Vivid highlight** (optional): the page you're on gets a solid accent pill
+  with a soft glow.
+- **Glass dashboard cards** (optional): your cards get the same frosted look.
+- **Theme aware**: uses your theme's colors, or an accent color of your own.
+- **Phone drawer**: on phones the menu opens wider, with larger touch targets
+  and a blurred page behind it. Tablets and desktops keep the normal layout.
+- **Subtle motion**: icons slide slightly on hover. Can be turned off, and is
+  off automatically when your device asks for reduced motion.
+- **Settings menu**: everything is set up from a menu in Home Assistant and
+  applies immediately in every open browser, without a reload.
 
 ## Screenshots
+
+![Vivid highlight with glass cards](images/vivid.png)
 
 | Light | Dark |
 | --- | --- |
@@ -76,42 +80,61 @@ Click the button above, or add it by hand:
 
 ## Configuration
 
-Go to **Settings → Devices & services → Glass Sidebar → Configure**.
+Go to **Settings → Devices & services → Glass Sidebar → Configure**. A menu
+opens with **Appearance**, **Phone**, **Categories** and **Save**. Your changes
+are kept while you move between pages and stored when you choose **Save**.
 
-![Options dialog](images/options.png)
+![Settings menu and category editor](images/options.png)
+
+### Appearance
 
 | Option | Default | What it does |
 | --- | --- | --- |
 | Floating | On | Shows the sidebar as a separate panel with space around it. Off keeps it attached to the screen edge. |
 | Distance to screen edge | 8 px | Space around the floating panel. |
 | Corner radius | 20 px | Roundness of the panel. Menu items follow along. |
-| Blur | 18 px | Strength of the glass blur behind the panel. |
-| Categories | empty | Groups panels under headings. See below. |
+| Blur | 18 px | Strength of the glass blur. Also used for glass cards. |
+| Panel opacity | 74 % | Lower is more see-through. |
+| Selected item | Soft tint | *Soft tint* or *Vivid with glow*. |
+| Use my own accent color | Off | Off follows your theme. On uses the **Accent color** below. |
+| Hover animation | On | Icons slide slightly when you point at them. |
+| Glass dashboard cards | Off | Makes cards translucent. Best with a background image; can be heavy on older tablets. |
+
+### Phone
+
+Applies to screens up to 600 px wide.
+
+| Option | Default | What it does |
+| --- | --- | --- |
+| Drawer width | 300 px | Width of the menu when it slides in. Never more than 90 % of the screen. |
+| Blur the page behind the menu | On | Frosts the dashboard while the menu is open. |
 
 ### Categories
 
-Write one category per line: a name, a colon, then the panels that belong to
-it, separated by commas.
+Choose **Add a category**, give it a name and pick its panels from the list.
+The list shows every panel in your sidebar with its address, for example
+*Energy (/energy)*. Panels appear in the order you pick them.
 
-```text
-Dashboards: lovelace, living-room, energy, map
-Insight: logbook, history, media-browser, todo
-```
+With **Edit or remove a category** you can rename a category, change its
+panels, move it to another position or remove it.
 
-For each panel you can use either:
+Panels you don't put in a category stay at the top in Home Assistant's own
+order. Settings, notifications and your profile always stay at the bottom. A
+panel in two categories appears in the first one. The order and visibility you
+set with Home Assistant's own *Edit sidebar* (long-press the title) still
+apply.
 
-- its **URL path**: what comes after the first `/` in your browser's address
-  bar when you open it. For example, `/energy` → `energy`, and
-  `/dashboard-living/0` → `dashboard-living`.
-- its **title** exactly as shown in the sidebar, e.g. `Living room`. Not
-  case-sensitive.
+Categories written as text in version 1.1 are taken over automatically.
 
-Panels appear in the order you list them. Panels you don't list stay at the
-top in Home Assistant's own order. Settings, notifications and your profile
-always stay at the bottom.
+## Updates
 
-The order and visibility you set with Home Assistant's own *Edit sidebar*
-(long-press the title) still apply.
+New versions are published as GitHub releases. HACS shows them under
+**Settings → Updates** like any other update, with the release notes. Install
+it there, restart Home Assistant when asked and refresh your browser.
+
+HACS never installs updates on its own. If you want that, create an
+automation that runs the `update.install` action on the Glass Sidebar update
+entity when it turns on.
 
 ## Compatibility
 
@@ -129,9 +152,9 @@ through HACS alone isn't enough), then hard-refresh the browser. In the
 companion app: *Settings → Companion app → Debugging → Reset frontend cache*.
 
 **A category doesn't show up.**
-A heading only appears when at least one of its panels is found. Check the
-spelling of the URL path or title. Headings are hidden on the collapsed
-sidebar and shown as dividers instead.
+A heading only appears when at least one of its panels is in your sidebar.
+Check that the panel isn't hidden with *Edit sidebar*. Headings are hidden on
+the collapsed sidebar and shown as dividers instead.
 
 **Keyboard navigation follows a different order.**
 Categories only change the visual order. Arrow-key navigation inside the

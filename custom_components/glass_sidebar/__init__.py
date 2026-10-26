@@ -14,28 +14,45 @@ from homeassistant.helpers.dispatcher import (
 )
 
 from .const import (
+    CONF_ACCENT_COLOR,
     CONF_BLUR,
-    CONF_CATEGORIES,
+    CONF_CUSTOM_ACCENT,
     CONF_FLOATING,
+    CONF_GLASS_CARDS,
+    CONF_HIGHLIGHT,
+    CONF_HOVER_MOTION,
     CONF_INSET,
+    CONF_MOBILE_BLUR,
+    CONF_MOBILE_WIDTH,
+    CONF_OPACITY,
     CONF_RADIUS,
     DEFAULTS,
     DOMAIN,
+    HIGHLIGHTS,
     JS_PATH,
     JS_URL,
     SIGNAL_UPDATE,
-    parse_categories,
+    stored_categories,
 )
 
 DISABLED: dict[str, Any] = {"enabled": False}
 
 
+def _accent(options: dict[str, Any]) -> str | None:
+    if not options[CONF_CUSTOM_ACCENT]:
+        return None
+    try:
+        red, green, blue = (int(c) for c in options[CONF_ACCENT_COLOR])
+    except (TypeError, ValueError):
+        return None
+    return f"rgb({red}, {green}, {blue})"
+
+
 def build_config(entry: ConfigEntry) -> dict[str, Any]:
     options = {**DEFAULTS, **entry.options}
-    try:
-        categories = parse_categories(options[CONF_CATEGORIES])
-    except ValueError:
-        categories = []
+    highlight = options[CONF_HIGHLIGHT]
+    if highlight not in HIGHLIGHTS:
+        highlight = DEFAULTS[CONF_HIGHLIGHT]
 
     return {
         "enabled": True,
@@ -43,7 +60,14 @@ def build_config(entry: ConfigEntry) -> dict[str, Any]:
         "inset": int(options[CONF_INSET]),
         "radius": int(options[CONF_RADIUS]),
         "blur": int(options[CONF_BLUR]),
-        "categories": categories,
+        "opacity": int(options[CONF_OPACITY]),
+        "highlight": highlight,
+        "accent": _accent(options),
+        "hover_motion": bool(options[CONF_HOVER_MOTION]),
+        "glass_cards": bool(options[CONF_GLASS_CARDS]),
+        "mobile_width": int(options[CONF_MOBILE_WIDTH]),
+        "mobile_blur": bool(options[CONF_MOBILE_BLUR]),
+        "categories": stored_categories(options),
     }
 
 

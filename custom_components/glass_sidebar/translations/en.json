@@ -1,5 +1,11 @@
 {
   "config": {
+    "step": {
+      "user": {
+        "title": "Glass Sidebar",
+        "description": "Adds the glass style to the sidebar. Choose Configure afterwards to change it."
+      }
+    },
     "abort": {
       "single_instance_allowed": "Glass Sidebar is already set up."
     }
@@ -7,22 +13,95 @@
   "options": {
     "step": {
       "init": {
-        "title": "Sidebar style",
+        "title": "Glass Sidebar",
+        "description": "Choose what you want to change. Your changes are kept until you choose **Save**.",
+        "menu_options": {
+          "appearance": "Appearance",
+          "mobile": "Phone",
+          "categories": "Categories",
+          "save": "Save"
+        }
+      },
+      "appearance": {
+        "title": "Appearance",
         "data": {
           "floating": "Floating",
           "inset": "Distance to screen edge",
           "radius": "Corner radius",
           "blur": "Blur",
-          "categories": "Categories"
+          "opacity": "Panel opacity",
+          "highlight": "Selected item",
+          "custom_accent": "Use my own accent color",
+          "accent_color": "Accent color",
+          "hover_motion": "Hover animation",
+          "glass_cards": "Glass dashboard cards"
         },
         "data_description": {
           "floating": "Show the sidebar as a separate panel with space around it.",
-          "categories": "One category per line: Name: panel, panel. Use the panel's URL path (e.g. energy, map, logbook) or its title as shown in the sidebar. Panels not listed stay at the top."
+          "opacity": "Lower is more see-through.",
+          "custom_accent": "Off: use the accent color of your theme.",
+          "hover_motion": "Icons slide slightly when you point at them.",
+          "glass_cards": "Make dashboard cards translucent with the same blur. Looks best with a background image. Can be heavy on older tablets."
+        }
+      },
+      "mobile": {
+        "title": "Phone",
+        "description": "These apply to screens up to 600 px wide. Tablets and computers keep the normal drawer.",
+        "data": {
+          "mobile_width": "Drawer width",
+          "mobile_blur": "Blur the page behind the menu"
+        }
+      },
+      "categories": {
+        "title": "Categories",
+        "description": "Group your sidebar under your own headings. Panels you don't put in a category stay at the top.\n\n{categories}",
+        "menu_options": {
+          "category_add": "Add a category",
+          "category_pick": "Edit or remove a category",
+          "init": "Back"
+        }
+      },
+      "category_add": {
+        "title": "New category",
+        "data": {
+          "name": "Name",
+          "panels": "Panels"
+        },
+        "data_description": {
+          "panels": "Pick the panels in the order you want them shown."
+        }
+      },
+      "category_pick": {
+        "title": "Which category?",
+        "data": {
+          "category": "Category"
+        }
+      },
+      "category_edit": {
+        "title": "Edit {name}",
+        "data": {
+          "name": "Name",
+          "panels": "Panels",
+          "position": "Position",
+          "remove": "Remove this category"
+        },
+        "data_description": {
+          "panels": "Pick the panels in the order you want them shown.",
+          "position": "1 is the top category."
         }
       }
     },
     "error": {
-      "invalid_categories": "Every line needs a name followed by a colon, e.g. Dashboards: lovelace, energy"
+      "name_required": "Give the category a name.",
+      "name_exists": "There is already a category with this name."
+    }
+  },
+  "selector": {
+    "highlight": {
+      "options": {
+        "soft": "Soft tint",
+        "vivid": "Vivid with glow"
+      }
     }
   }
 }

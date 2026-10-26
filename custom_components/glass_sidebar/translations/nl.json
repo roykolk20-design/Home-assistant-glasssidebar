@@ -1,5 +1,11 @@
 {
   "config": {
+    "step": {
+      "user": {
+        "title": "Glass Sidebar",
+        "description": "Voegt de glazen stijl toe aan de zijbalk. Kies daarna Configureren om hem aan te passen."
+      }
+    },
     "abort": {
       "single_instance_allowed": "Glass Sidebar is al ingesteld."
     }
@@ -7,22 +13,95 @@
   "options": {
     "step": {
       "init": {
-        "title": "Stijl van de zijbalk",
+        "title": "Glass Sidebar",
+        "description": "Kies wat je wilt aanpassen. Je wijzigingen blijven bewaard tot je op **Opslaan** kiest.",
+        "menu_options": {
+          "appearance": "Uiterlijk",
+          "mobile": "Telefoon",
+          "categories": "Categorieën",
+          "save": "Opslaan"
+        }
+      },
+      "appearance": {
+        "title": "Uiterlijk",
         "data": {
           "floating": "Zwevend",
           "inset": "Afstand tot schermrand",
           "radius": "Hoekradius",
           "blur": "Vervaging",
-          "categories": "Categorieën"
+          "opacity": "Dekking van de balk",
+          "highlight": "Actief item",
+          "custom_accent": "Eigen accentkleur gebruiken",
+          "accent_color": "Accentkleur",
+          "hover_motion": "Hover-animatie",
+          "glass_cards": "Glazen dashboardkaarten"
         },
         "data_description": {
           "floating": "Toon de zijbalk als losse balk met ruimte eromheen.",
-          "categories": "Eén categorie per regel: Naam: paneel, paneel. Gebruik het URL-pad van het paneel (bijv. energy, map, logbook) of de titel zoals in de zijbalk. Panelen die je niet noemt blijven bovenaan."
+          "opacity": "Lager is meer doorzichtig.",
+          "custom_accent": "Uit: gebruik de accentkleur van je thema.",
+          "hover_motion": "Iconen schuiven iets op als je erop wijst.",
+          "glass_cards": "Maak dashboardkaarten doorschijnend met dezelfde vervaging. Het mooist met een achtergrondafbeelding. Kan zwaar zijn op oudere tablets."
+        }
+      },
+      "mobile": {
+        "title": "Telefoon",
+        "description": "Geldt voor schermen tot 600 px breed. Tablets en computers houden de normale lade.",
+        "data": {
+          "mobile_width": "Breedte van de lade",
+          "mobile_blur": "Pagina achter het menu vervagen"
+        }
+      },
+      "categories": {
+        "title": "Categorieën",
+        "description": "Groepeer je zijbalk onder eigen kopjes. Panelen die je niet in een categorie zet, blijven bovenaan.\n\n{categories}",
+        "menu_options": {
+          "category_add": "Categorie toevoegen",
+          "category_pick": "Categorie bewerken of verwijderen",
+          "init": "Terug"
+        }
+      },
+      "category_add": {
+        "title": "Nieuwe categorie",
+        "data": {
+          "name": "Naam",
+          "panels": "Panelen"
+        },
+        "data_description": {
+          "panels": "Kies de panelen in de volgorde waarin je ze wilt zien."
+        }
+      },
+      "category_pick": {
+        "title": "Welke categorie?",
+        "data": {
+          "category": "Categorie"
+        }
+      },
+      "category_edit": {
+        "title": "{name} bewerken",
+        "data": {
+          "name": "Naam",
+          "panels": "Panelen",
+          "position": "Positie",
+          "remove": "Deze categorie verwijderen"
+        },
+        "data_description": {
+          "panels": "Kies de panelen in de volgorde waarin je ze wilt zien.",
+          "position": "1 is de bovenste categorie."
         }
       }
     },
     "error": {
-      "invalid_categories": "Elke regel heeft een naam met een dubbele punt nodig, bijv. Dashboards: lovelace, energy"
+      "name_required": "Geef de categorie een naam.",
+      "name_exists": "Er is al een categorie met deze naam."
+    }
+  },
+  "selector": {
+    "highlight": {
+      "options": {
+        "soft": "Zachte tint",
+        "vivid": "Fel met gloed"
+      }
     }
   }
 }

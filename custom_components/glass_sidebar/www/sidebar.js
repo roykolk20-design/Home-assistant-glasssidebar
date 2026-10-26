@@ -24,17 +24,36 @@
   }
 
   const enabled = () => Boolean(config?.enabled);
-  const floating = () => enabled() && config.floating;
 
   function mainCss() {
-    if (!floating()) return "";
+    if (!enabled()) return "";
     const extra = config.inset * 2;
     return `
-      :host(:not([modal])) {
-        --ha-sidebar-width: calc(56px + ${extra}px + var(--safe-area-inset-left, 0px));
+      ${
+        config.floating
+          ? `:host(:not([modal])) {
+               --ha-sidebar-width: calc(56px + ${extra}px + var(--safe-area-inset-left, 0px));
+             }
+             :host([expanded]:not([modal])) {
+               --ha-sidebar-width: calc(256px + ${extra}px + var(--safe-area-inset-left, 0px));
+             }`
+          : ""
       }
-      :host([expanded]:not([modal])) {
-        --ha-sidebar-width: calc(256px + ${extra}px + var(--safe-area-inset-left, 0px));
+
+      ${
+        // Cards inherit these from here; dialogs live outside and stay solid.
+        config.glass_cards
+          ? `:host {
+               --ha-card-background: color-mix(
+                 in srgb,
+                 var(--card-background-color, #fff) 62%,
+                 transparent
+               );
+               --ha-card-backdrop-filter: blur(${config.blur}px) saturate(1.5);
+               --ha-card-border-color: color-mix(in srgb, var(--divider-color, #888) 45%, transparent);
+               --ha-card-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 10px 28px rgba(0, 0, 0, 0.1);
+             }`
+          : ""
       }
     `;
   }
@@ -54,8 +73,8 @@
 
       @media ${phoneQuery} {
         wa-drawer {
-          --size: min(78vw, 300px);
-          --backdrop-filter: blur(8px) saturate(1.2);
+          --size: min(90vw, ${config.mobile_width ?? 300}px);
+          ${config.mobile_blur ?? true ? "--backdrop-filter: blur(8px) saturate(1.2);" : ""}
         }
 
         wa-drawer::part(dialog) {
@@ -72,11 +91,19 @@
     if (!enabled()) return "";
     const radius = config.floating ? config.radius : 0;
     const itemRadius = Math.min(Math.max(radius - 6, 8), 14);
+    const opacity = config.opacity ?? 74;
     return `
       :host {
+        ${
+          // HA colors the selected item with this variable, so one override is enough.
+          config.accent
+            ? `--sidebar-selected-icon-color: ${config.accent};
+               --sidebar-selected-text-color: ${config.accent};`
+            : ""
+        }
         background: color-mix(
           in srgb,
-          var(--sidebar-background-color, var(--card-background-color, #fff)) 74%,
+          var(--sidebar-background-color, var(--card-background-color, #fff)) ${opacity}%,
           transparent
         );
         -webkit-backdrop-filter: blur(${config.blur}px) saturate(1.5);
@@ -100,7 +127,8 @@
         :host([narrow]) {
           background: color-mix(
             in srgb,
-            var(--sidebar-background-color, var(--card-background-color, #fff)) 86%,
+            var(--sidebar-background-color, var(--card-background-color, #fff))
+              ${Math.min(opacity + 12, 100)}%,
             transparent
           );
           border-radius: ${radius}px;
@@ -147,14 +175,20 @@
         font-weight: 600;
       }
 
+      ${config.highlight === "vivid" ? vividCss(itemRadius) : ""}
+
       ha-list-item-button ha-svg-icon[slot="start"],
       ha-list-item-button ha-icon[slot="start"] {
         transition: transform 160ms ease-out;
       }
 
-      ha-list-item-button:hover ha-svg-icon[slot="start"],
-      ha-list-item-button:hover ha-icon[slot="start"] {
-        transform: translateX(2px);
+      ${
+        config.hover_motion ?? true
+          ? `ha-list-item-button:hover ha-svg-icon[slot="start"],
+             ha-list-item-button:hover ha-icon[slot="start"] {
+               transform: translateX(2px);
+             }`
+          : ""
       }
 
       ha-list-nav.before-spacer::part(base) {
@@ -188,6 +222,37 @@
         ha-list-item-button:hover ha-icon[slot="start"] {
           transform: none;
         }
+      }
+    `;
+  }
+
+  // A solid accent pill with a soft glow. HA's highlight layer sits above the
+  // item content, so it is moved behind it before it becomes opaque.
+  function vividCss(itemRadius) {
+    const accent = "var(--sidebar-selected-icon-color, var(--primary-color))";
+    return `
+      ha-list-item-button.selected {
+        isolation: isolate;
+      }
+
+      ha-list-item-button.selected::before {
+        z-index: -1;
+        opacity: 1;
+        border-radius: ${itemRadius}px;
+        background: linear-gradient(
+          135deg,
+          color-mix(in srgb, ${accent} 78%, black),
+          color-mix(in srgb, ${accent} 60%, black)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.25),
+          0 6px 18px -4px color-mix(in srgb, ${accent} 70%, transparent);
+      }
+
+      ha-list-item-button.selected::part(headline),
+      ha-list-item-button.selected ha-svg-icon[slot="start"],
+      ha-list-item-button.selected ha-icon[slot="start"] {
+        color: #fff;
       }
     `;
   }
