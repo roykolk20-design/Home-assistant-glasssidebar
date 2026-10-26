@@ -1,7 +1,7 @@
 from typing import Any
 
 DOMAIN = "glass_sidebar"
-VERSION = "1.5.0"
+VERSION = "1.6.0"
 JS_PATH = f"/{DOMAIN}/sidebar.js"
 JS_URL = f"{JS_PATH}?v={VERSION}"
 PANEL_JS_PATH = f"/{DOMAIN}/panel.js"
@@ -21,6 +21,7 @@ CONF_CUSTOM_ACCENT = "custom_accent"
 CONF_ACCENT_COLOR = "accent_color"
 CONF_HOVER_MOTION = "hover_motion"
 CONF_GLASS_CARDS = "glass_cards"
+CONF_EXTEND_BACKGROUND = "extend_background"
 CONF_QUICK_MENU = "quick_menu"
 CONF_MOBILE_WIDTH = "mobile_width"
 CONF_MOBILE_BLUR = "mobile_blur"
@@ -46,6 +47,7 @@ DEFAULTS: dict[str, Any] = {
     CONF_ACCENT_COLOR: [3, 169, 244],
     CONF_HOVER_MOTION: True,
     CONF_GLASS_CARDS: False,
+    CONF_EXTEND_BACKGROUND: True,
     CONF_QUICK_MENU: True,
     CONF_MOBILE_WIDTH: 300,
     CONF_MOBILE_BLUR: True,

@@ -36,7 +36,8 @@
           "hover_motion": "Hover animation",
           "glass_cards": "Glass dashboard cards",
           "tint": "Glass tint",
-          "quick_menu": "Quick menu in the sidebar"
+          "quick_menu": "Quick menu in the sidebar",
+          "extend_background": "Background behind the sidebar"
         },
         "data_description": {
           "floating": "Show the sidebar as a separate panel with space around it.",
@@ -44,7 +45,8 @@
           "custom_accent": "Off: use the accent color of your theme.",
           "hover_motion": "Icons slide slightly when you point at them.",
           "glass_cards": "Make dashboard cards translucent with the same blur. Looks best with a background image. Can be heavy on older tablets.",
-          "quick_menu": "A button in the sidebar header for quick changes. Admins only."
+          "quick_menu": "A button in the sidebar header for quick changes. Admins only.",
+          "extend_background": "Your dashboard background runs to the screen edge, so the sidebar floats over it. Only when the sidebar is floating."
         }
       },
       "mobile": {

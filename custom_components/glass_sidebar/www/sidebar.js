@@ -3,7 +3,7 @@
   window.__glassSidebar = true;
 
   // Kept in step with VERSION in const.py; a newer server version reloads the page.
-  const scriptVersion = "1.5.0";
+  const scriptVersion = "1.6.0";
   const reloadKey = "glass-sidebar-reloaded-for";
   const cacheKey = "glass-sidebar-config";
   const collapsedKey = "glass-sidebar-collapsed";
@@ -64,7 +64,10 @@
     // Dialogs, like the notifications drawer, are added to home-assistant's shadow root.
     const notifications = ha?.shadowRoot?.querySelector("notification-drawer");
     const notificationsDrawer = notifications?.shadowRoot?.querySelector("ha-drawer");
-    return { ha, main, drawer, sidebar, notifications, notificationsDrawer };
+    // The open page. Dashboards draw their background inside hui-root.
+    const panel = main?.shadowRoot?.querySelector("partial-panel-resolver")?.firstElementChild;
+    const dashboard = panel?.shadowRoot?.querySelector("hui-root");
+    return { ha, main, drawer, sidebar, notifications, notificationsDrawer, panel, dashboard };
   }
 
   const hass = () => document.querySelector("home-assistant")?.hass;
@@ -107,6 +110,19 @@
                --ha-card-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 10px 28px rgba(0, 0, 0, 0.1);
              }`
           : ""
+      }
+    `;
+  }
+
+  // A dashboard's background normally starts where the sidebar ends. Stretch
+  // it to the screen edge so the glass sidebar floats over it.
+  function backgroundCss() {
+    if (!enabled() || !config.floating || !(config.extend_background ?? true)) return "";
+    return `
+      hui-view-background {
+        inset-inline-start: calc(-1 * var(--ha-sidebar-width, 0px)) !important;
+        width: auto !important;
+        max-width: none !important;
       }
     `;
   }
@@ -902,8 +918,14 @@
 
   function render() {
     frame = 0;
-    const { ha, main, drawer, sidebar, notifications, notificationsDrawer } = findParts();
+    const { ha, main, drawer, sidebar, notifications, notificationsDrawer, panel, dashboard } = findParts();
     if (ha?.shadowRoot) watch(ha.shadowRoot);
+    // Dashboards (hui-root) and panels like Lights or Climate have a view background.
+    if (panel?.shadowRoot) {
+      watch(panel.shadowRoot);
+      applySheet(panel.shadowRoot, backgroundCss());
+    }
+    if (dashboard?.shadowRoot) applySheet(dashboard.shadowRoot, backgroundCss());
     if (notifications?.shadowRoot) {
       // The drawer inside is only rendered once it opens.
       watch(notifications.shadowRoot);

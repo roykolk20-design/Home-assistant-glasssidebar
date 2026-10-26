@@ -3,7 +3,7 @@
 # Glass Sidebar for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
-![Version](https://img.shields.io/badge/version-1.5.0-03A9F4)
+![Version](https://img.shields.io/badge/version-1.6.0-03A9F4)
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.10%2B-18BCF2)
 
 A modern, glass-style sidebar for Home Assistant. It turns the left navigation
@@ -122,6 +122,7 @@ item and accent color. Categories and phone settings stay as they are.
 | Option | Default | What it does |
 | --- | --- | --- |
 | Floating | On | A separate panel with space around it. Off keeps it attached to the screen edge. |
+| Background behind the sidebar | On | Your dashboard background runs to the screen edge, so the glass sidebar floats over it instead of sitting on a plain strip. Only when floating. |
 | Distance to screen edge | 8 px | Space around the floating panel. |
 | Corner radius | 20 px | Roundness of the panel. Menu items follow along. |
 | Blur | 18 px | Strength of the glass blur. Also used for glass cards. |

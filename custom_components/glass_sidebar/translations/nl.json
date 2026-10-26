@@ -36,7 +36,8 @@
           "hover_motion": "Hover-animatie",
           "glass_cards": "Glazen dashboardkaarten",
           "tint": "Kleur van het glas",
-          "quick_menu": "Snelmenu in de zijbalk"
+          "quick_menu": "Snelmenu in de zijbalk",
+          "extend_background": "Achtergrond onder de zijbalk door"
         },
         "data_description": {
           "floating": "Toon de zijbalk als losse balk met ruimte eromheen.",
@@ -44,7 +45,8 @@
           "custom_accent": "Uit: gebruik de accentkleur van je thema.",
           "hover_motion": "Iconen schuiven iets op als je erop wijst.",
           "glass_cards": "Maak dashboardkaarten doorschijnend met dezelfde vervaging. Het mooist met een achtergrondafbeelding. Kan zwaar zijn op oudere tablets.",
-          "quick_menu": "Een knopje in de kop van de zijbalk voor snelle aanpassingen. Alleen voor beheerders."
+          "quick_menu": "Een knopje in de kop van de zijbalk voor snelle aanpassingen. Alleen voor beheerders.",
+          "extend_background": "De achtergrond van je dashboard loopt door tot de schermrand, zodat de zijbalk erboven zweeft. Alleen als de zijbalk zweeft."
         }
       },
       "mobile": {

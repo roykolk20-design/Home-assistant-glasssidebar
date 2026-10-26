@@ -21,6 +21,7 @@
       highlight: "Selected item", highlights: { soft: "Soft tint", vivid: "Vivid with glow" },
       hover: ["Hover animation", "Icons slide slightly when you point at them"],
       cards: ["Glass dashboard cards", "Cards get the same blur. Can be heavy on older tablets"],
+      extendBg: ["Background behind the sidebar", "Your dashboard background runs to the screen edge, so the sidebar floats over it"],
       quick: ["Quick menu", "A button in the sidebar header for quick changes"],
       customAccent: ["Use my own accent color", "Off: the accent color of your theme"],
       accent: "Accent color", pickColor: "Pick a color",
@@ -57,6 +58,7 @@
       highlight: "Actief item", highlights: { soft: "Zachte tint", vivid: "Fel met gloed" },
       hover: ["Hover-animatie", "Iconen schuiven iets op als je erop wijst"],
       cards: ["Glazen dashboardkaarten", "Kaarten krijgen dezelfde vervaging. Kan zwaar zijn op oudere tablets"],
+      extendBg: ["Achtergrond onder de zijbalk door", "De achtergrond van je dashboard loopt door tot de schermrand, zodat de zijbalk erboven zweeft"],
       quick: ["Snelmenu", "Een knopje in de kop van de zijbalk voor snelle aanpassingen"],
       customAccent: ["Eigen accentkleur gebruiken", "Uit: de accentkleur van je thema"],
       accent: "Accentkleur", pickColor: "Kies een kleur",
@@ -431,6 +433,7 @@
       const t = this._t;
       return `<div class="split"><section class="card list" aria-label="${esc(t.tabs.shape)}">
         ${this._toggleRow("floating", t.floating, o)}
+        ${this._toggleRow("extend_background", t.extendBg, o)}
         ${this._sliderRow("inset", t.inset, 0, 24, "px", o)}
         ${this._sliderRow("radius", t.radius, 0, 32, "px", o)}
         ${this._sliderRow("blur", t.blur, 0, 40, "px", o)}

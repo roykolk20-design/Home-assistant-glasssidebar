@@ -25,6 +25,7 @@ from .const import (
     CONF_BLUR,
     CONF_CATEGORIES,
     CONF_CUSTOM_ACCENT,
+    CONF_EXTEND_BACKGROUND,
     CONF_FLOATING,
     CONF_GLASS_CARDS,
     CONF_HIGHLIGHT,
@@ -97,6 +98,7 @@ APPEARANCE_SCHEMA = vol.Schema(
         vol.Required(CONF_ACCENT_COLOR): ColorRGBSelector(),
         vol.Required(CONF_HOVER_MOTION): BooleanSelector(),
         vol.Required(CONF_GLASS_CARDS): BooleanSelector(),
+        vol.Required(CONF_EXTEND_BACKGROUND): BooleanSelector(),
         vol.Required(CONF_QUICK_MENU): BooleanSelector(),
     }
 )

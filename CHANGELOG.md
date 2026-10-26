@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0]
+
+- **Background behind the sidebar.** Your dashboard background (from your
+  theme or from the view settings) now runs to the screen edge, so the glass
+  sidebar floats over it instead of sitting on a plain strip. On by default
+  while the sidebar is floating; switch it off under Shape & glass.
+
 ## [1.5.0]
 
 ### New
