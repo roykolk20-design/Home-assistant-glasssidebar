@@ -1,7 +1,7 @@
 {
   "config": {
     "abort": {
-      "single_instance_allowed": "Apple Glass Sidebar is already set up."
+      "single_instance_allowed": "Glass Sidebar is already set up."
     }
   },
   "options": {

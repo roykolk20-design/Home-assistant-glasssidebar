@@ -67,7 +67,7 @@ class GlassSidebarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if self._async_current_entries():
             return self.async_abort(reason="single_instance_allowed")
 
-        return self.async_create_entry(title="Apple Glass Sidebar", data={})
+        return self.async_create_entry(title="Glass Sidebar", data={})
 
 
 class GlassSidebarOptionsFlow(config_entries.OptionsFlow):

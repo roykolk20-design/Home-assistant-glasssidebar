@@ -1,5 +1,6 @@
 {
-  "name": "Apple Glass Sidebar",
+  "name": "Glass Sidebar",
   "render_readme": true,
-  "zip_release": false
+  "zip_release": false,
+  "homeassistant": "2026.10.0"
 }
