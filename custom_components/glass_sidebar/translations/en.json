@@ -1,0 +1,28 @@
+{
+  "config": {
+    "abort": {
+      "single_instance_allowed": "Apple Glass Sidebar is already set up."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sidebar style",
+        "data": {
+          "floating": "Floating",
+          "inset": "Distance to screen edge",
+          "radius": "Corner radius",
+          "blur": "Blur",
+          "categories": "Categories"
+        },
+        "data_description": {
+          "floating": "Show the sidebar as a separate panel with space around it.",
+          "categories": "One category per line: Name: panel, panel. Use the panel's URL path (e.g. energy, map, logbook) or its title as shown in the sidebar. Panels not listed stay at the top."
+        }
+      }
+    },
+    "error": {
+      "invalid_categories": "Every line needs a name followed by a colon, e.g. Dashboards: lovelace, energy"
+    }
+  }
+}

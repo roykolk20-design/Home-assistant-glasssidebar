@@ -1,0 +1,28 @@
+{
+  "config": {
+    "abort": {
+      "single_instance_allowed": "Apple Glass Sidebar is al ingesteld."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Stijl van de zijbalk",
+        "data": {
+          "floating": "Zwevend",
+          "inset": "Afstand tot schermrand",
+          "radius": "Hoekradius",
+          "blur": "Vervaging",
+          "categories": "Categorieën"
+        },
+        "data_description": {
+          "floating": "Toon de zijbalk als losse balk met ruimte eromheen.",
+          "categories": "Eén categorie per regel: Naam: paneel, paneel. Gebruik het URL-pad van het paneel (bijv. energy, map, logbook) of de titel zoals in de zijbalk. Panelen die je niet noemt blijven bovenaan."
+        }
+      }
+    },
+    "error": {
+      "invalid_categories": "Elke regel heeft een naam met een dubbele punt nodig, bijv. Dashboards: lovelace, energy"
+    }
+  }
+}
