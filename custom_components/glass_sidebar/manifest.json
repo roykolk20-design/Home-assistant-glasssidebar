@@ -1,11 +1,12 @@
 {
   "domain": "glass_sidebar",
   "name": "Glass Sidebar",
-  "version": "1.1.0",
-  "documentation": "https://github.com/roykolk20-design/Home-assistant-glasssidebar",
-  "codeowners": [],
+  "codeowners": ["@roykolk20-design"],
   "config_flow": true,
   "dependencies": ["frontend", "http", "websocket_api"],
+  "documentation": "https://github.com/roykolk20-design/Home-assistant-glasssidebar",
   "integration_type": "service",
-  "iot_class": "calculated"
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/roykolk20-design/Home-assistant-glasssidebar/issues",
+  "version": "1.1.0"
 }

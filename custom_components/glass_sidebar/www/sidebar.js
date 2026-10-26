@@ -124,6 +124,7 @@
 
       .menu {
         border-bottom-color: transparent;
+        background-color: transparent;
       }
 
       ha-list-item-button {
@@ -242,7 +243,9 @@
         : "";
       const title =
         el.querySelector(".item-text")?.textContent.trim().toLowerCase() ?? "";
-      const order = lookup.get(path) ?? lookup.get(title) ?? natural;
+      // A panel listed in several categories goes to the first one.
+      const listed = Math.min(lookup.get(path) ?? Infinity, lookup.get(title) ?? Infinity);
+      const order = listed === Infinity ? natural : listed;
       if (order >= 1000) used.add(Math.floor(order / 1000) - 1);
 
       natural += 1;

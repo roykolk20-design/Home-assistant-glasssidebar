@@ -46,10 +46,15 @@ is configured entirely from the UI. No YAML, no extra frontend resources.
 
 ### HACS (recommended)
 
+[![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=roykolk20-design&repository=Home-assistant-glasssidebar&category=integration)
+
+Click the button above, or add it by hand:
+
 1. In Home Assistant, open **HACS**.
 2. Open the menu (⋮) in the top right and choose **Custom repositories**.
 3. Add `https://github.com/roykolk20-design/Home-assistant-glasssidebar` with
-   type **Integration**.
+   type **Integration** (not *Theme* or *Dashboard*, those give a
+   "repository structure is not compliant" error).
 4. Search for **Glass Sidebar** in HACS and download it.
 5. Restart Home Assistant.
 6. Go to **Settings → Devices & services → Add integration** and choose
