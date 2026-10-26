@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.0]
+
+- **Changes are saved right away.** The settings menu no longer needs Save;
+  every change is stored and shown immediately. *Save* is now *Close*.
+- **No more clearing the cache after an update.** When the app or browser
+  still runs the previous version, it reloads itself once.
+- **Notifications** open in the same floating glass panel as the sidebar.
+- **Works with themes that style the sidebar**, such as Frosted Glass: their
+  sidebar background, border and glass layer no longer override the plugin.
+  The rest of the theme keeps working.
+
 ## [1.3.0]
 
 - **Text size on phones** is now a setting (Phone → Text size). The default

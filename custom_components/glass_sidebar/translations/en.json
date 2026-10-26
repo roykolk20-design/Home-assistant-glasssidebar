@@ -14,12 +14,12 @@
     "step": {
       "init": {
         "title": "Glass Sidebar",
-        "description": "Choose what you want to change. Your changes are kept until you choose **Save**.",
+        "description": "Choose what you want to change. Changes are saved and shown right away.",
         "menu_options": {
           "appearance": "Appearance",
           "mobile": "Phone",
           "categories": "Categories",
-          "save": "Save"
+          "done": "Close"
         }
       },
       "appearance": {

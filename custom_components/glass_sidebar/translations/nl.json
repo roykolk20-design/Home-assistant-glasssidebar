@@ -14,12 +14,12 @@
     "step": {
       "init": {
         "title": "Glass Sidebar",
-        "description": "Kies wat je wilt aanpassen. Je wijzigingen blijven bewaard tot je op **Opslaan** kiest.",
+        "description": "Kies wat je wilt aanpassen. Wijzigingen worden meteen opgeslagen en getoond.",
         "menu_options": {
           "appearance": "Uiterlijk",
           "mobile": "Telefoon",
           "categories": "Categorieën",
-          "save": "Opslaan"
+          "done": "Sluiten"
         }
       },
       "appearance": {

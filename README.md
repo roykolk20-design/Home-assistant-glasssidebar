@@ -3,7 +3,7 @@
 # Glass Sidebar for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
-![Version](https://img.shields.io/badge/version-1.3.0-03A9F4)
+![Version](https://img.shields.io/badge/version-1.4.0-03A9F4)
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.10%2B-18BCF2)
 
 A modern, glass-style sidebar for Home Assistant. It turns the left navigation
@@ -35,6 +35,9 @@ is configured entirely from the UI. No YAML, no extra frontend resources.
   off automatically when your device asks for reduced motion.
 - **Settings menu**: everything is set up from a menu in Home Assistant and
   applies immediately in every open browser, without a reload.
+- **Notifications** open in the same floating glass panel.
+- **Works with sidebar themes**: themes that style the sidebar themselves, such
+  as Frosted Glass, keep working for everything else.
 
 ## Screenshots
 
@@ -89,8 +92,8 @@ Click the button above, or add it by hand:
 ## Configuration
 
 Go to **Settings → Devices & services → Glass Sidebar → Configure**. A menu
-opens with **Appearance**, **Phone**, **Categories** and **Save**. Your changes
-are kept while you move between pages and stored when you choose **Save**.
+opens with **Appearance**, **Phone** and **Categories**. Every change is saved
+and shown right away; choose **Close** when you're done.
 
 ![Settings menu and category editor](images/options.png)
 
@@ -139,7 +142,9 @@ Categories written as text in version 1.1 are taken over automatically.
 
 New versions are published as GitHub releases. HACS shows them under
 **Settings → Updates** like any other update, with the release notes. Install
-it there, restart Home Assistant when asked and refresh your browser.
+it there and restart Home Assistant when asked. Open browsers and the
+companion app reload themselves once to pick up the new version; there is no
+need to clear the cache.
 
 HACS never installs updates on its own. If you want that, create an
 automation that runs the `update.install` action on the Glass Sidebar update

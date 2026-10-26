@@ -143,7 +143,7 @@ class GlassSidebarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 class GlassSidebarOptionsFlow(config_entries.OptionsFlow):
-    """A menu of settings pages; nothing is stored until Save."""
+    """A menu of settings pages. Every change is stored right away."""
 
     def __init__(self) -> None:
         self._options: dict[str, Any] = {}
@@ -161,14 +161,14 @@ class GlassSidebarOptionsFlow(config_entries.OptionsFlow):
             self._options[CONF_CATEGORIES] = stored_categories(self._options)
         return self.async_show_menu(
             step_id="init",
-            menu_options=["appearance", "mobile", "categories", "save"],
+            menu_options=["appearance", "mobile", "categories", "done"],
         )
 
     async def async_step_appearance(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         if user_input is not None:
-            self._options.update(user_input)
+            self._store(user_input)
             return await self.async_step_init()
         return self._settings_form("appearance", APPEARANCE_SCHEMA)
 
@@ -176,14 +176,21 @@ class GlassSidebarOptionsFlow(config_entries.OptionsFlow):
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         if user_input is not None:
-            self._options.update(user_input)
+            self._store(user_input)
             return await self.async_step_init()
         return self._settings_form("mobile", MOBILE_SCHEMA)
 
-    async def async_step_save(
+    async def async_step_done(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         return self.async_create_entry(data=self._options)
+
+    def _store(self, changes: dict[str, Any]) -> None:
+        """Save right away, so the sidebar updates while the menu stays open."""
+        self._options = {**self._options, **changes}
+        self.hass.config_entries.async_update_entry(
+            self.config_entry, options=self._options
+        )
 
     async def async_step_categories(
         self, user_input: dict[str, Any] | None = None
@@ -207,10 +214,14 @@ class GlassSidebarOptionsFlow(config_entries.OptionsFlow):
             if error := self._name_error(name, skip=None):
                 errors[CONF_NAME] = error
             else:
-                self._options[CONF_CATEGORIES] = [
-                    *self._categories,
-                    {"name": name, "panels": user_input.get(CONF_PANELS, [])},
-                ]
+                self._store(
+                    {
+                        CONF_CATEGORIES: [
+                            *self._categories,
+                            {"name": name, "panels": user_input.get(CONF_PANELS, [])},
+                        ]
+                    }
+                )
                 return await self.async_step_categories()
 
         values = user_input or {}
@@ -256,7 +267,7 @@ class GlassSidebarOptionsFlow(config_entries.OptionsFlow):
             name = user_input[CONF_NAME].strip()
             if user_input.get(CONF_REMOVE):
                 del categories[self._editing]
-                self._options[CONF_CATEGORIES] = categories
+                self._store({CONF_CATEGORIES: categories})
                 return await self.async_step_categories()
             if error := self._name_error(name, skip=self._editing):
                 errors[CONF_NAME] = error
@@ -267,7 +278,7 @@ class GlassSidebarOptionsFlow(config_entries.OptionsFlow):
                     position - 1,
                     {"name": name, "panels": user_input.get(CONF_PANELS, [])},
                 )
-                self._options[CONF_CATEGORIES] = categories
+                self._store({CONF_CATEGORIES: categories})
                 return await self.async_step_categories()
 
         values = user_input or {

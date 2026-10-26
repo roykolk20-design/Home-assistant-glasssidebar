@@ -33,6 +33,7 @@ from .const import (
     JS_PATH,
     JS_URL,
     SIGNAL_UPDATE,
+    VERSION,
     stored_categories,
 )
 
@@ -57,6 +58,7 @@ def build_config(entry: ConfigEntry) -> dict[str, Any]:
 
     return {
         "enabled": True,
+        "version": VERSION,
         "floating": bool(options[CONF_FLOATING]),
         "inset": int(options[CONF_INSET]),
         "radius": int(options[CONF_RADIUS]),

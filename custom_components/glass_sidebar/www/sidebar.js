@@ -2,6 +2,9 @@
   if (window.__glassSidebar) return;
   window.__glassSidebar = true;
 
+  // Kept in step with VERSION in const.py; a newer server version reloads the page.
+  const scriptVersion = "1.4.0";
+  const reloadKey = "glass-sidebar-reloaded-for";
   const cacheKey = "glass-sidebar-config";
   const sectionClass = "gs-section";
   const panelIdPrefix = "sidebar-panel-";
@@ -20,10 +23,16 @@
     const main = ha?.shadowRoot?.querySelector("home-assistant-main");
     const drawer = main?.shadowRoot?.querySelector("ha-drawer");
     const sidebar = main?.shadowRoot?.querySelector("ha-sidebar");
-    return { ha, main, drawer, sidebar };
+    // Dialogs, like the notifications drawer, are added to home-assistant's shadow root.
+    const notifications = ha?.shadowRoot?.querySelector("notification-drawer");
+    const notificationsDrawer = notifications?.shadowRoot?.querySelector("ha-drawer");
+    return { ha, main, drawer, sidebar, notifications, notificationsDrawer };
   }
 
   const enabled = () => Boolean(config?.enabled);
+  const glassBackground = (opacity, fallback = "var(--card-background-color, #fff)") =>
+    `color-mix(in srgb, var(--sidebar-background-color, ${fallback}) ${opacity}%, transparent)`;
+  const glassBorder = "1px solid color-mix(in srgb, var(--divider-color, #888) 60%, transparent)";
 
   function mainCss() {
     if (!enabled()) return "";
@@ -58,6 +67,8 @@
     `;
   }
 
+  // Rules that shape the panel are !important: themes that style the sidebar
+  // with card-mod may add their styles after ours, and must not undo the look.
   function drawerCss() {
     if (!enabled()) return "";
     const inset = config.floating ? config.inset : 0;
@@ -65,7 +76,8 @@
       ${
         config.floating
           ? `.sidebar-shell {
-               border-inline-end-color: transparent;
+               border-inline-end-color: transparent !important;
+               background: transparent !important;
                padding: ${inset}px;
              }`
           : ""
@@ -78,11 +90,58 @@
         }
 
         wa-drawer::part(dialog) {
-          box-sizing: border-box;
-          padding: ${inset}px;
-          background: transparent;
-          box-shadow: none;
+          box-sizing: border-box !important;
+          padding: ${inset}px !important;
+          background: transparent !important;
+          box-shadow: none !important;
+          border: 0 !important;
         }
+      }
+    `;
+  }
+
+  // The notifications drawer: the same floating glass panel as the sidebar.
+  function notificationsDrawerCss() {
+    if (!enabled()) return "";
+    const inset = config.floating ? config.inset : 0;
+    const radius = config.floating ? config.radius : 0;
+    return `
+      wa-drawer {
+        --backdrop-filter: blur(6px) saturate(1.2);
+      }
+
+      wa-drawer::part(dialog) {
+        box-sizing: border-box !important;
+        padding: ${inset}px !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        border: 0 !important;
+      }
+
+      wa-drawer::part(body) {
+        box-sizing: border-box;
+        height: 100%;
+        overflow: hidden;
+        border-radius: ${radius}px !important;
+        background: ${glassBackground(Math.min((config.opacity ?? 74) + 12, 100), "var(--primary-background-color, #fff)")} !important;
+        -webkit-backdrop-filter: blur(${config.blur}px) saturate(1.5);
+        backdrop-filter: blur(${config.blur}px) saturate(1.5);
+        ${config.floating ? `border: ${glassBorder} !important; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28) !important;` : ""}
+      }
+    `;
+  }
+
+  function notificationsCss() {
+    if (!enabled()) return "";
+    return `
+      ha-header-bar {
+        --app-header-background-color: transparent;
+        background-color: transparent !important;
+        border-bottom-color: color-mix(in srgb, var(--divider-color, #888) 50%, transparent) !important;
+      }
+
+      .notifications {
+        background-color: transparent !important;
       }
     `;
   }
@@ -104,41 +163,37 @@
                --sidebar-selected-text-color: ${config.accent};`
             : ""
         }
-        background: color-mix(
-          in srgb,
-          var(--sidebar-background-color, var(--card-background-color, #fff)) ${opacity}%,
-          transparent
-        );
-        -webkit-backdrop-filter: blur(${config.blur}px) saturate(1.5);
-        backdrop-filter: blur(${config.blur}px) saturate(1.5);
-        border-radius: ${radius}px;
+        background: ${glassBackground(opacity)} !important;
+        -webkit-backdrop-filter: blur(${config.blur}px) saturate(1.5) !important;
+        backdrop-filter: blur(${config.blur}px) saturate(1.5) !important;
+        border-radius: ${radius}px !important;
         ${
           config.floating
-            ? `border: 1px solid color-mix(in srgb, var(--divider-color, #888) 60%, transparent);
-               box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.12);`
+            ? `border: ${glassBorder} !important;
+               box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.12) !important;`
             : ""
         }
       }
 
+      /* Some themes draw their own glass layer here; ours replaces it. */
+      :host::before {
+        content: none !important;
+      }
+
       :host([narrow]) {
-        border: 0;
-        border-radius: 0;
-        box-shadow: none;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
       }
 
       @media ${phoneQuery} {
         :host([narrow]) {
-          background: color-mix(
-            in srgb,
-            var(--sidebar-background-color, var(--card-background-color, #fff))
-              ${Math.min(opacity + 12, 100)}%,
-            transparent
-          );
-          border-radius: ${radius}px;
+          background: ${glassBackground(Math.min(opacity + 12, 100))} !important;
+          border-radius: ${radius}px !important;
           ${
             config.floating
-              ? `border: 1px solid color-mix(in srgb, var(--divider-color, #888) 60%, transparent);
-                 box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);`
+              ? `border: ${glassBorder} !important;
+                 box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28) !important;`
               : ""
           }
         }
@@ -358,8 +413,16 @@
 
   function render() {
     frame = 0;
-    const { ha, main, drawer, sidebar } = findParts();
+    const { ha, main, drawer, sidebar, notifications, notificationsDrawer } = findParts();
     if (ha?.shadowRoot) watch(ha.shadowRoot);
+    if (notifications?.shadowRoot) {
+      // The drawer inside is only rendered once it opens.
+      watch(notifications.shadowRoot);
+      applySheet(notifications.shadowRoot, notificationsCss());
+    }
+    if (notificationsDrawer?.shadowRoot) {
+      applySheet(notificationsDrawer.shadowRoot, notificationsDrawerCss());
+    }
     if (main?.shadowRoot) {
       watch(main.shadowRoot);
       applySheet(main.shadowRoot, mainCss());
@@ -384,7 +447,20 @@
     }
   }
 
+  // After an update the app often keeps the old page (and this old script)
+  // open. Reload once so the browser picks up the new version by itself.
+  function reloadForVersion(version) {
+    try {
+      if (sessionStorage.getItem(reloadKey) === version) return;
+      sessionStorage.setItem(reloadKey, version);
+    } catch (err) {
+      return; // Without storage we can't guard against reload loops.
+    }
+    location.reload();
+  }
+
   function setConfig(value) {
+    if (value?.version && value.version !== scriptVersion) reloadForVersion(value.version);
     config = value;
     try {
       localStorage.setItem(cacheKey, JSON.stringify(value));

@@ -23,6 +23,11 @@ jobs:
             echo "::error::Tag $GITHUB_REF_NAME does not match manifest version $manifest"
             exit 1
           fi
+          # The browser compares this to reload after an update.
+          if ! grep -q "const scriptVersion = \"$tag\";" custom_components/glass_sidebar/www/sidebar.js; then
+            echo "::error::scriptVersion in sidebar.js is not $tag"
+            exit 1
+          fi
 
       - name: Take release notes from CHANGELOG.md
         run: |
