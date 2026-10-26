@@ -1,3 +1,5 @@
+<img src="custom_components/glass_sidebar/brand/icon.png" alt="" width="96" align="right">
+
 # Glass Sidebar for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
