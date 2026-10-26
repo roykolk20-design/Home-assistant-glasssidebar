@@ -181,3 +181,7 @@ shadow DOM and adds a stylesheet to it. Your options are sent to the browser
 over Home Assistant's websocket, so changes apply instantly. Categories use
 CSS `order` and extra headings. The sidebar's own elements are never moved or
 replaced.
+
+## License
+
+[MIT](LICENSE)
