@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.8.0]
+
+### New
+
+- **A style for someone else.** Admins choose *For someone else*, pick a
+  person and set their colors and look. That person sees it on every device.
+  If they chose their own style, that comes first, and the page says so.
+- **Clearer Colors and Shape tabs.** Accent colors are circles (with *Theme*
+  as the first one), and glass, selected item, icons, spacing and shadow are
+  small examples you click instead of rows of words.
+
+### Changed
+
+- The *Shape & glass* and *Color* tabs became *Colors* and *Shape*: everything
+  about color is now in one place.
+
 ## [1.7.0]
 
 ### New

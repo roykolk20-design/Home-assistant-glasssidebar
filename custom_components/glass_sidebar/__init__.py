@@ -5,6 +5,7 @@ import voluptuous as vol
 
 from homeassistant.components import frontend, panel_custom, websocket_api
 from homeassistant.components.frontend import add_extra_js_url, remove_extra_js_url
+from homeassistant.components.frontend.storage import async_user_store
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry, ConfigEntryState
 from homeassistant.core import HomeAssistant, callback
@@ -39,6 +40,7 @@ from .const import (
     CONF_SELECTED_SHAPE,
     CONF_SHADOW,
     CONF_TINT,
+    CONF_USER_STYLES,
     DEFAULTS,
     DENSITIES,
     DOMAIN,
@@ -80,8 +82,14 @@ def _choice(options: dict[str, Any], key: str, allowed: tuple[str, ...]) -> str:
     return value if value in allowed else DEFAULTS[key]
 
 
-def build_config(entry: ConfigEntry) -> dict[str, Any]:
+def build_config(entry: ConfigEntry, user_id: str | None = None) -> dict[str, Any]:
     options = current_options(entry.options)
+    # A style an admin set for this person goes on top of the standard.
+    if user_id and (assigned := options[CONF_USER_STYLES].get(user_id)):
+        options = {
+            **options,
+            **{k: v for k, v in assigned.get("values", {}).items() if k in PERSONAL_KEYS},
+        }
 
     return {
         "enabled": True,
@@ -122,9 +130,9 @@ def loaded_entry(hass: HomeAssistant) -> ConfigEntry | None:
 
 
 @callback
-def current_config(hass: HomeAssistant) -> dict[str, Any]:
+def current_config(hass: HomeAssistant, user_id: str | None = None) -> dict[str, Any]:
     entry = loaded_entry(hass)
-    return build_config(entry) if entry else DISABLED
+    return build_config(entry, user_id) if entry else DISABLED
 
 
 @websocket_api.websocket_command({vol.Required("type"): f"{DOMAIN}/subscribe"})
@@ -132,15 +140,19 @@ def current_config(hass: HomeAssistant) -> dict[str, Any]:
 def ws_subscribe(
     hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict
 ) -> None:
+    user_id = connection.user.id if connection.user else None
+
+    # Each browser gets the look for the person who is logged in.
     @callback
-    def forward(config: dict[str, Any]) -> None:
+    def forward(entry: ConfigEntry | None) -> None:
+        config = build_config(entry, user_id) if entry else DISABLED
         connection.send_message(websocket_api.event_message(msg["id"], config))
 
     connection.subscriptions[msg["id"]] = async_dispatcher_connect(
         hass, SIGNAL_UPDATE, forward
     )
     connection.send_result(msg["id"])
-    forward(current_config(hass))
+    forward(loaded_entry(hass))
 
 
 def _settings_result(entry: ConfigEntry) -> dict[str, Any]:
@@ -190,6 +202,36 @@ def ws_settings_update(
     connection.send_result(msg["id"], _settings_result(entry))
 
 
+@websocket_api.require_admin
+@websocket_api.websocket_command({vol.Required("type"): f"{DOMAIN}/users"})
+@websocket_api.async_response
+async def ws_users(
+    hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict
+) -> None:
+    """People an admin can set a style for, and whether they chose their own."""
+    entry = loaded_entry(hass)
+    assigned = current_options(entry.options)[CONF_USER_STYLES] if entry else {}
+    people = []
+    for user in await hass.auth.async_get_users():
+        if user.system_generated or not user.is_active:
+            continue
+        try:
+            own = (await async_user_store(hass, user.id)).data.get(USER_DATA_KEY) or {}
+        except Exception:  # noqa: BLE001 - a broken store shouldn't hide the person
+            own = {}
+        people.append(
+            {
+                "id": user.id,
+                "name": user.name or user.id,
+                "is_admin": user.is_admin,
+                "own_style": bool(own.get("use_own")),
+                "assigned": user.id in assigned,
+            }
+        )
+    people.sort(key=lambda person: person["name"].lower())
+    connection.send_result(msg["id"], people)
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if not hass.data.get(DOMAIN):
         www = Path(__file__).parent / "www"
@@ -202,6 +244,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         websocket_api.async_register_command(hass, ws_subscribe)
         websocket_api.async_register_command(hass, ws_settings)
         websocket_api.async_register_command(hass, ws_settings_update)
+        websocket_api.async_register_command(hass, ws_users)
         hass.data[DOMAIN] = True
 
     add_extra_js_url(hass, JS_URL)
@@ -217,16 +260,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         config_panel_domain=DOMAIN,
     )
     entry.async_on_unload(entry.add_update_listener(async_options_updated))
-    async_dispatcher_send(hass, SIGNAL_UPDATE, build_config(entry))
+    async_dispatcher_send(hass, SIGNAL_UPDATE, entry)
     return True
 
 
 async def async_options_updated(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    async_dispatcher_send(hass, SIGNAL_UPDATE, build_config(entry))
+    async_dispatcher_send(hass, SIGNAL_UPDATE, entry)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     remove_extra_js_url(hass, JS_URL)
     frontend.async_remove_panel(hass, PANEL_URL_PATH, warn_if_unknown=False)
-    async_dispatcher_send(hass, SIGNAL_UPDATE, DISABLED)
+    async_dispatcher_send(hass, SIGNAL_UPDATE, None)
     return True

@@ -1,7 +1,7 @@
 from typing import Any
 
 DOMAIN = "glass_sidebar"
-VERSION = "1.7.0"
+VERSION = "1.8.0"
 # Each person's own style lives in Home Assistant's per-user frontend data.
 USER_DATA_KEY = DOMAIN
 JS_PATH = f"/{DOMAIN}/sidebar.js"
@@ -38,6 +38,8 @@ CONF_MOBILE_SWIPE = "mobile_swipe"
 CONF_MOBILE_HIDE_HEADER = "mobile_hide_header"
 CONF_CATEGORIES = "categories"
 CONF_CUSTOM_STYLES = "custom_styles"
+# Styles an admin set for a specific person: {user_id: {"values": {...}}}.
+CONF_USER_STYLES = "user_styles"
 
 HIGHLIGHTS = ("soft", "vivid")
 TINTS = ("theme", "light", "dark")
@@ -73,6 +75,7 @@ DEFAULTS: dict[str, Any] = {
     CONF_MOBILE_HIDE_HEADER: False,
     CONF_CATEGORIES: [],
     CONF_CUSTOM_STYLES: [],
+    CONF_USER_STYLES: {},
 }
 
 # A style sets these; categories and phone settings stay as they are.

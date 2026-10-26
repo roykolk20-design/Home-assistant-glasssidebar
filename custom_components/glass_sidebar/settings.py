@@ -31,6 +31,7 @@ from .const import (
     CONF_SELECTED_SHAPE,
     CONF_SHADOW,
     CONF_TINT,
+    CONF_USER_STYLES,
     DENSITIES,
     HIGHLIGHTS,
     ICON_COLORS,
@@ -90,19 +91,39 @@ CUSTOM_STYLE = vol.Schema(
     {vol.Required("name"): _name, vol.Required("values"): vol.Schema(STYLE_VALUES)}
 )
 
+# Everything a person's own style may contain.
+PERSONAL_VALUES = {
+    **STYLE_VALUES,
+    vol.Optional(CONF_HOVER_MOTION): bool,
+    vol.Optional(CONF_GLASS_CARDS): bool,
+    vol.Optional(CONF_EXTEND_BACKGROUND): bool,
+    vol.Optional(CONF_MOBILE_WIDTH): _number(240, 360),
+    vol.Optional(CONF_MOBILE_TEXT_SIZE): _number(12, 20),
+    vol.Optional(CONF_MOBILE_BLUR): bool,
+    vol.Optional(CONF_MOBILE_ROUNDED): bool,
+    vol.Optional(CONF_MOBILE_SWIPE): bool,
+    vol.Optional(CONF_MOBILE_HIDE_HEADER): bool,
+}
+
+
+def _user_styles(value: Any) -> dict[str, Any]:
+    styles = vol.Schema(
+        {
+            vol.All(str, vol.Length(min=1, max=64)): vol.Schema(
+                {vol.Required("values"): vol.Schema(PERSONAL_VALUES)}
+            )
+        }
+    )(value)
+    if len(styles) > 100:
+        raise vol.Invalid("too many people")
+    return styles
+
+
 CHANGES = vol.Schema(
     {
-        **STYLE_VALUES,
-        vol.Optional(CONF_HOVER_MOTION): bool,
-        vol.Optional(CONF_GLASS_CARDS): bool,
-        vol.Optional(CONF_EXTEND_BACKGROUND): bool,
+        **PERSONAL_VALUES,
         vol.Optional(CONF_QUICK_MENU): bool,
-        vol.Optional(CONF_MOBILE_WIDTH): _number(240, 360),
-        vol.Optional(CONF_MOBILE_TEXT_SIZE): _number(12, 20),
-        vol.Optional(CONF_MOBILE_BLUR): bool,
-        vol.Optional(CONF_MOBILE_ROUNDED): bool,
-        vol.Optional(CONF_MOBILE_SWIPE): bool,
-        vol.Optional(CONF_MOBILE_HIDE_HEADER): bool,
+        vol.Optional(CONF_USER_STYLES): _user_styles,
         vol.Optional(CONF_CATEGORIES): vol.All(
             [CATEGORY], vol.Length(max=30), _unique_names
         ),

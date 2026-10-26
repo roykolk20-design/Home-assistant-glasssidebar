@@ -3,7 +3,7 @@
 # Glass Sidebar for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
-![Version](https://img.shields.io/badge/version-1.7.0-03A9F4)
+![Version](https://img.shields.io/badge/version-1.8.0-03A9F4)
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.10%2B-18BCF2)
 
 A modern, glass-style sidebar for Home Assistant. It turns the left navigation
@@ -26,8 +26,9 @@ is configured entirely from the UI. No YAML, no extra frontend resources.
 - **Settings page with live preview**: tabs for style, shape and glass,
   color, phone and categories. Every change applies right away.
 - **Your own style, per person**: everyone in the house can pick their own
-  colors and look. It follows them to all their devices. What an admin sets is
-  the standard for everyone else.
+  colors and look. It follows them to all their devices. Admins can also set
+  the style for someone else, and what they set as the standard is what
+  everyone else sees.
 - **Styles**: twelve ready-made looks (Frosted, Midnight, Vivid, Aurora, Ocean,
   Sunset, Forest, Rose, Graphite, Mono, Minimal, Solid) and your own saved
   styles.
@@ -108,7 +109,7 @@ Admins: go to **Settings → Devices & services → Glass Sidebar** and choose t
 **cog** (Configure). Everyone: open the **quick menu** in the sidebar header and
 choose *All settings*. The Glass Sidebar settings page opens.
 
-### Just for me, or for everyone
+### Who a change is for
 
 At the top of the settings page you choose who a change is for:
 
@@ -116,11 +117,18 @@ At the top of the settings page you choose who a change is for:
   devices, because it's stored with your Home Assistant account. As long as you
   haven't changed anything you follow the standard; *Back to the standard*
   switches your own style off again.
+- **For someone else** (admins only): pick a person and set their colors and
+  look. They see it on every device they sign in on. If that person chose
+  their own style, that comes first; the page tells you when that's the case.
+  *Use the standard for …* removes what you set for them.
 - **Standard for everyone** (admins only): what everyone sees who hasn't
-  chosen their own style. Categories and the quick menu switch are always set
+  chosen their own style, and hasn't been given one. Categories and the quick menu switch are always set
   here, because they're the same for the whole house.
 
-![Your own style](images/personal-style.png)
+What someone sees, from bottom to top: the standard, then what an admin set
+for them, then their own style.
+
+![Setting the style for someone else](images/someone-else.png)
 
 Every change is saved and shown right away, in the preview and in your real
 sidebar, on every open browser.
@@ -136,9 +144,22 @@ next to the built-in ones and can be removed again.
 A style sets floating, distance, radius, blur, opacity, glass tint, selected
 item and accent color. Categories and phone settings stay as they are.
 
-### Shape & glass
+### Colors
 
-![Shape and glass with live preview](images/settings-shape.png)
+![Colors](images/settings-colors.png)
+
+Every choice is a small example you click, so you see what you get.
+
+| Section | Choices |
+| --- | --- |
+| Accent color | *Theme* follows your theme. Or one of the colors, or *Own* for any color. Used for the selected item, toggles and the glow. |
+| Glass | *Theme*, *Light* or *Dark* glass, how see-through it is (opacity, default 74 %) and an optional **accent glow** in the top of the glass. |
+| Selected item | Six examples: *Pill*, *Bar* (a line at the side) or *Outline*, each *soft* or *vivid*. |
+| Icons | *Theme*, *Accent* or *Muted*. |
+
+### Shape
+
+![Shape](images/settings-shape.png)
 
 | Option | Default | What it does |
 | --- | --- | --- |
@@ -147,22 +168,11 @@ item and accent color. Categories and phone settings stay as they are.
 | Distance to screen edge | 8 px | Space around the floating panel. |
 | Corner radius | 20 px | Roundness of the panel. Menu items follow along. |
 | Blur | 18 px | Strength of the glass blur. Also used for glass cards. |
-| Opacity | 74 % | Lower is more see-through. |
-| Glass tint | Theme | *Theme* follows your theme. *Light* or *Dark* gives the glass a fixed color with matching text. |
-| Selected item | Soft tint | *Soft tint* or *Vivid with glow*. |
-| Selected item shape | Pill | *Pill*, *Bar* (a line at the side) or *Outline*. |
-| Spacing | Normal | *Compact*, *Normal* or *Roomy* rows. |
-| Shadow | Soft | *None*, *Soft* or *Deep*. |
-| Accent glow | Off | A soft light of your accent color in the top of the glass. |
+| Spacing | Normal | *Compact*, *Normal* or *Roomy* rows, shown as examples. |
+| Shadow | Soft | *None*, *Soft* or *Deep*, shown as examples. |
 | Hover animation | On | Icons slide slightly when you point at them. |
 | Glass dashboard cards | Off | Makes cards translucent. Best with a background image; can be heavy on older tablets. |
-| Quick menu | On | The button in the sidebar header. Shared setting. |
-
-### Color
-
-Use your theme's accent color, or pick one of the swatches or any color of
-your own. **Icon color** makes the sidebar icons follow your theme, your
-accent color, or a calmer muted gray.
+| Quick menu | On | The button in the sidebar header. Only under *Standard for everyone*. |
 
 ### Phone
 

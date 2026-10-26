@@ -8,5 +8,5 @@
   "integration_type": "service",
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/roykolk20-design/Home-assistant-glasssidebar/issues",
-  "version": "1.7.0"
+  "version": "1.8.0"
 }

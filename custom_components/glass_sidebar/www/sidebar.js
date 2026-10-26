@@ -3,7 +3,7 @@
   window.__glassSidebar = true;
 
   // Kept in step with VERSION in const.py; a newer server version reloads the page.
-  const scriptVersion = "1.7.0";
+  const scriptVersion = "1.8.0";
   const reloadKey = "glass-sidebar-reloaded-for";
   const cacheKey = "glass-sidebar-config";
   const personalCacheKey = "glass-sidebar-personal";

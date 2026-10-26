@@ -6,7 +6,19 @@
     en: {
       subtitle: "Settings", live: "Changes apply right away", saving: "Saving…", saved: "Saved",
       error: "Couldn't save", loading: "Loading…", notLoaded: "Glass Sidebar isn't set up.",
-      tabs: { style: "Style", shape: "Shape & glass", color: "Color", phone: "Phone", categories: "Categories" },
+      tabs: { style: "Style", color: "Colors", shape: "Shape", phone: "Phone", categories: "Categories" },
+      scopeUser: "For someone else", pickPerson: "Who?", noPeople: "There's nobody else to set a style for.",
+      userNote: (name) => `You're changing the style of ${name}. ${name} sees it on every device they sign in on.`,
+      userOwn: (name) => `${name} chose their own style, which comes first. ${name} can go back under Just for me → Back to the standard.`,
+      userBack: (name) => `Use the standard for ${name}`,
+      secAccent: ["Accent color", "Used for the selected item, toggles and glow."], themeColor: "Theme", ownColor: "Own",
+      secGlass: ["Glass", "The color of the panel and how see-through it is."],
+      secSelected: ["Selected item", "How the page you're on stands out."],
+      secIcons: ["Icons", "The color of the icons in front of each page."],
+      secFloat: ["Placement", ""],
+      secSize: ["Size and blur", ""], secDensity: ["Spacing", "How much room each page gets."],
+      secShadow: ["Shadow", "How far the panel lifts off the page."], secExtra: ["Extras", ""],
+      soft: "soft", vividShort: "vivid", sample: "Overview",
       styleTitle: "Choose a style", styleIntro: "Start from a style and fine-tune it under Shape & glass.",
       chosen: "Chosen", yourStyles: "Your styles", saveStyle: "Save current settings as a style",
       styleName: "Name of the style", save: "Save", remove: "Remove",
@@ -58,7 +70,19 @@
     nl: {
       subtitle: "Instellingen", live: "Wordt direct toegepast", saving: "Opslaan…", saved: "Opgeslagen",
       error: "Opslaan mislukt", loading: "Laden…", notLoaded: "Glass Sidebar is niet ingesteld.",
-      tabs: { style: "Stijl", shape: "Vorm en glas", color: "Kleur", phone: "Telefoon", categories: "Categorieën" },
+      tabs: { style: "Stijl", color: "Kleuren", shape: "Vorm", phone: "Telefoon", categories: "Categorieën" },
+      scopeUser: "Voor iemand anders", pickPerson: "Wie?", noPeople: "Er is nog niemand anders om een stijl voor in te stellen.",
+      userNote: (name) => `Je past de stijl van ${name} aan. ${name} ziet dit op elk apparaat waarop ${name} inlogt.`,
+      userOwn: (name) => `${name} heeft zelf een eigen stijl gekozen, en die gaat voor. ${name} kan terug via Alleen voor mij → Terug naar de standaard.`,
+      userBack: (name) => `Standaard gebruiken voor ${name}`,
+      secAccent: ["Accentkleur", "Voor het actieve item, schakelaars en de gloed."], themeColor: "Thema", ownColor: "Eigen",
+      secGlass: ["Glas", "De kleur van de balk en hoe doorzichtig hij is."],
+      secSelected: ["Actief item", "Hoe de pagina waar je bent opvalt."],
+      secIcons: ["Iconen", "De kleur van de iconen voor elke pagina."],
+      secFloat: ["Plaats", ""],
+      secSize: ["Formaat en vervaging", ""], secDensity: ["Ruimte", "Hoeveel plek elke pagina krijgt."],
+      secShadow: ["Schaduw", "Hoe ver de balk boven de pagina zweeft."], secExtra: ["Extra", ""],
+      soft: "zacht", vividShort: "fel", sample: "Overzicht",
       styleTitle: "Kies een stijl", styleIntro: "Begin met een stijl en pas daarna alles aan bij Vorm en glas.",
       chosen: "Gekozen", yourStyles: "Jouw stijlen", saveStyle: "Huidige instellingen als stijl bewaren",
       styleName: "Naam van de stijl", save: "Bewaren", remove: "Verwijderen",
@@ -260,6 +284,31 @@
       background: color-mix(in srgb, var(--primary-color) 10%, transparent); }
     .note span { flex: 1; min-width: 220px; }
     .dot { width: 6px; height: 6px; border-radius: 50%; flex: none; margin-right: 6px; }
+    .section { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+    .section + .section { border-top: 1px solid color-mix(in srgb, var(--divider-color) 70%, transparent); }
+    .section h3 { margin: 0; font-size: 16px; font-weight: 600; }
+    .section > .hint { margin: -8px 0 2px; }
+    .choices.combos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .section .row { min-height: 0; padding: 4px 0; }
+    .section .row + .row { border-top: 0; }
+    .choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
+    .choice { display: flex; flex-direction: column; gap: 8px; padding: 8px; border: 0; border-radius: 14px; cursor: pointer; text-align: center;
+      font-size: 13px; font-weight: 500; background: color-mix(in srgb, var(--primary-text-color) 5%, transparent); }
+    .choice[aria-checked="true"] { background: var(--card-background-color); box-shadow: 0 0 0 2.5px var(--primary-color); font-weight: 600; }
+    .demo { height: 68px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 8px; overflow: hidden;
+      background: radial-gradient(90px 60px at 85% 15%, rgba(124,92,255,.35), transparent 70%), radial-gradient(100px 70px at 10% 95%, rgba(3,169,244,.35), transparent 70%), #DCE6F2; }
+    .demo.dark { background: radial-gradient(90px 60px at 85% 15%, rgba(124,92,255,.4), transparent 70%), radial-gradient(100px 70px at 10% 95%, rgba(3,169,244,.3), transparent 70%), #0E1220; }
+    .demo .pill { height: 22px; display: flex; align-items: center; gap: 6px; padding: 0 8px; border-radius: 8px; font-size: 11px; text-align: start; white-space: nowrap; }
+    .demo .line { height: 6px; border-radius: 3px; background: currentColor; opacity: .35; }
+    .circles { display: flex; flex-wrap: wrap; gap: 14px; }
+    .circle-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: var(--secondary-text-color); }
+    .circle { position: relative; width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+    .circle[aria-checked="true"] { box-shadow: 0 0 0 3px var(--card-background-color), 0 0 0 5px var(--primary-text-color); }
+    .circle input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .person { height: 44px; min-width: 200px; padding: 0 12px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--divider-color) 90%, transparent);
+      background: var(--card-background-color); font-size: 15px; }
+    .note.warn { background: color-mix(in srgb, var(--warning-color, #ffa000) 16%, transparent); }
     .loading { padding: 48px; text-align: center; color: var(--secondary-text-color); }
     .menu-fallback { width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
     @media (prefers-reduced-motion: reduce) { .switch, .switch::before { transition: none; } }
@@ -279,6 +328,8 @@
       this._nameErrors = {};
       this._drag = null;
       this._scope = "me";
+      this._target = null;
+      this._people = null;
       this._personal = null;
       this.shadowRoot.addEventListener("click", (ev) => this._onClick(ev));
       this.shadowRoot.addEventListener("input", (ev) => this._onInput(ev));
@@ -326,12 +377,37 @@
       return this._scope === "me" || !this._admin;
     }
 
+    // An admin setting the style of someone else.
+    get _forUser() {
+      return this._admin && this._scope === "user" && Boolean(this._target);
+    }
+
+    _userValues() {
+      return pick(this._settings.options.user_styles?.[this._target]?.values, PERSONAL_KEYS);
+    }
+
+    get _person() {
+      return this._people?.find((p) => p.id === this._target) || { id: this._target, name: "?" };
+    }
+
+    async _loadPeople() {
+      try {
+        const people = await this._hass.callWS({ type: "glass_sidebar/users" });
+        this._people = people.filter((p) => p.id !== this._hass.user?.id);
+      } catch (err) {
+        this._people = [];
+      }
+      if (!this._target && this._people.length) this._target = this._people[0].id;
+      this._render();
+    }
+
     // Your own values, or the standard you follow until you change something.
     _personalValues() {
       return this._personal?.use_own ? pick(this._personal.values, PERSONAL_KEYS) : pick(this._settings.options, PERSONAL_KEYS);
     }
 
     get _o() {
+      if (this._scope === "user" && this._admin) return { ...this._settings.options, ...this._userValues(), ...this._pending };
       if (!this._mine) return { ...this._settings.options, ...this._pending };
       return { ...this._settings.options, ...this._personalValues(), ...this._pending };
     }
@@ -368,6 +444,11 @@
     async _save() {
       const changes = this._pending;
       if (!Object.keys(changes).length) return;
+      // "For someone else" without a person picked: never fall through to the standard.
+      if (this._admin && this._scope === "user" && !this._target) {
+        this._pending = {};
+        return;
+      }
       this._pending = {};
       try {
         if (this._mine) {
@@ -378,6 +459,16 @@
           if ("custom_styles" in changes) next.custom_styles = changes.custom_styles;
           this._personal = next;
           await this._hass.connection.sendMessagePromise({ type: "frontend/set_user_data", key: "glass_sidebar", value: next });
+          this._setStatus(Object.keys(this._pending).length ? "saving" : "saved");
+          return;
+        }
+        if (this._forUser) {
+          // Shared styles saved here are for everyone; the rest is this person's.
+          const shared = "custom_styles" in changes ? { custom_styles: changes.custom_styles } : {};
+          const values = { ...this._userValues(), ...pick(changes, PERSONAL_KEYS) };
+          const userStyles = { ...(this._settings.options.user_styles || {}), [this._target]: { values } };
+          this._settings = await this._hass.callWS({ type: "glass_sidebar/settings/update", changes: { ...shared, user_styles: userStyles } });
+          if (this._people) this._people = this._people.map((p) => p.id === this._target ? { ...p, assigned: true } : p);
           this._setStatus(Object.keys(this._pending).length ? "saving" : "saved");
           return;
         }
@@ -436,13 +527,33 @@
     _scopeHTML() {
       const t = this._t;
       const own = this._personal?.use_own;
-      const seg = this._admin ? `<div class="seg" role="radiogroup" aria-label="${esc(t.scopeMe)} / ${esc(t.scopeAll)}">
-        ${[["me", t.scopeMe], ["all", t.scopeAll]].map(([value, label]) =>
-          `<button type="button" role="radio" aria-checked="${(value === "me") === this._mine}" data-action="scope" data-value="${value}" data-f="scope-${value}">${esc(label)}</button>`).join("")}</div>` : "";
-      const note = !this._mine ? `<span>${esc(t.allNote)}</span>`
-        : own ? `<span>${esc(t.ownNote)}</span><button type="button" class="btn ghost" data-action="to-standard" data-f="to-standard">${esc(t.backToStandard)}</button>`
-        : `<span>${esc(t.followNote)}</span>`;
-      return `<div class="scope-bar">${seg}</div><div class="note" role="status">${note}</div>`;
+      const scope = this._mine ? "me" : this._scope;
+      const seg = this._admin ? `<div class="seg" role="radiogroup" aria-label="${esc(t.scopeMe)}">
+        ${[["me", t.scopeMe], ["user", t.scopeUser], ["all", t.scopeAll]].map(([value, label]) =>
+          `<button type="button" role="radio" aria-checked="${scope === value}" data-action="scope" data-value="${value}" data-f="scope-${value}">${esc(label)}</button>`).join("")}</div>` : "";
+      let picker = "";
+      let note;
+      let warn = false;
+      if (scope === "user") {
+        if (!this._people) note = `<span>${esc(t.loading)}</span>`;
+        else if (!this._people.length) note = `<span>${esc(t.noPeople)}</span>`;
+        else {
+          picker = `<label class="muted" for="person" style="display: flex; align-items: center; gap: 8px">${esc(t.pickPerson)}
+            <select id="person" class="person" data-person data-f="person">${this._people.map((p) =>
+              `<option value="${esc(p.id)}" ${p.id === this._target ? "selected" : ""}>${esc(p.name)}</option>`).join("")}</select></label>`;
+          const name = this._person.name;
+          warn = this._person.own_style;
+          const assigned = Boolean(this._settings.options.user_styles?.[this._target]);
+          note = `<span>${esc(warn ? t.userOwn(name) : t.userNote(name))}</span>${assigned
+            ? `<button type="button" class="btn ghost" data-action="user-standard" data-f="user-standard">${esc(t.userBack(name))}</button>` : ""}`;
+        }
+      } else if (scope === "all") {
+        note = `<span>${esc(t.allNote)}</span>`;
+      } else {
+        note = own ? `<span>${esc(t.ownNote)}</span><button type="button" class="btn ghost" data-action="to-standard" data-f="to-standard">${esc(t.backToStandard)}</button>`
+          : `<span>${esc(t.followNote)}</span>`;
+      }
+      return `<div class="scope-bar">${seg}${picker}</div><div class="note${warn ? " warn" : ""}" role="status">${note}</div>`;
     }
 
     _focusKey(el) {
@@ -533,36 +644,81 @@
         </div></div>`;
     }
 
-    _shapeTab(o) {
-      const t = this._t;
-      return `<div class="split"><section class="card list" aria-label="${esc(t.tabs.shape)}">
-        ${this._toggleRow("floating", t.floating, o)}
-        ${this._toggleRow("extend_background", t.extendBg, o)}
-        ${this._sliderRow("inset", t.inset, 0, 24, "px", o)}
-        ${this._sliderRow("radius", t.radius, 0, 32, "px", o)}
-        ${this._sliderRow("blur", t.blur, 0, 40, "px", o)}
-        ${this._sliderRow("opacity", t.opacity, 40, 100, "%", o)}
-        ${this._segRow("tint", t.tint, t.tints, o)}
-        ${this._segRow("highlight", t.highlight, t.highlights, o)}
-        ${this._segRow("selected_shape", t.shape, t.shapes, o)}
-        ${this._segRow("density", t.density, t.densities, o)}
-        ${this._segRow("shadow", t.shadow, t.shadows, o)}
-        ${this._toggleRow("glow", t.glow, o)}
-        ${this._toggleRow("hover_motion", t.hover, o)}
-        ${this._toggleRow("glass_cards", t.cards, o)}
-        ${this._mine ? "" : this._toggleRow("quick_menu", t.quick, o)}
-      </section>${this._previewCard("desktop")}</div>`;
+    _section([title, hint], body) {
+      return `<div class="section"><h3>${esc(title)}</h3>${hint ? `<p class="hint">${esc(hint)}</p>` : ""}${body}</div>`;
+    }
+
+    // Clickable examples instead of words. Each option sets one key.
+    _choices(key, options, o) {
+      const label = this._t[key] || key;
+      return `<div class="choices" role="radiogroup" aria-label="${esc(typeof label === "string" ? label : key)}">${options.map(({ value, text, demo, dark }) =>
+        `<button type="button" class="choice" role="radio" aria-checked="${o[key] === value}" data-action="set" data-key="${key}" data-value="${value}" data-f="${key}-${value}">
+          <span class="demo${dark ? " dark" : ""}">${demo}</span>${esc(text)}</button>`).join("")}</div>`;
     }
 
     _colorTab(o) {
       const t = this._t;
-      const swatches = ACCENTS.map((c) =>
-        `<button type="button" class="swatch" style="background: ${rgb(c)}" aria-label="${rgb(c)}" aria-pressed="${o.custom_accent && same(o.accent_color, c)}" data-action="accent" data-value="${c.join(",")}" data-f="acc-${c.join("-")}"></button>`).join("");
-      return `<div class="split"><section class="card list" aria-label="${esc(t.tabs.color)}">
-        ${this._toggleRow("custom_accent", t.customAccent, o)}
-        <div class="row col"><span class="name">${esc(t.accent)}</span>
-          <div class="swatches">${swatches}<input type="color" aria-label="${esc(t.pickColor)}" value="${hex(o.accent_color)}" data-key="accent_color" data-color data-f="color-input"></div></div>
-        ${this._segRow("icon_color", t.iconColor, t.iconColors, o)}
+      const check = svg(ICON.check, 18, 3);
+      const circle = (attrs, background, checked, label, visible = label) => `<span class="circle-wrap">
+        <button type="button" class="circle" role="radio" aria-checked="${checked}" aria-label="${esc(label)}" style="background: ${background}" ${attrs}>${checked ? check : ""}</button>${esc(visible)}</span>`;
+      const circles = [
+        circle(`data-action="choose" data-values='${esc(JSON.stringify({ custom_accent: false }))}' data-f="acc-theme"`, "var(--primary-color)", !o.custom_accent, t.themeColor),
+        ...ACCENTS.map((c) => circle(`data-action="accent" data-value="${c.join(",")}" data-f="acc-${c.join("-")}"`, rgb(c),
+          o.custom_accent && same(o.accent_color, c), rgb(c), "")),
+      ].join("");
+      const ownChecked = o.custom_accent && !ACCENTS.some((c) => same(o.accent_color, c));
+      const own = `<span class="circle-wrap"><span class="circle" role="radio" aria-checked="${ownChecked}" style="background: ${ownChecked ? rgb(o.accent_color) : "conic-gradient(#f44336, #ffeb3b, #4caf50, #03a9f4, #9c27b0, #f44336)"}">
+        ${ownChecked ? check : svg(ICON.plus, 18, 2.6)}<input type="color" aria-label="${esc(t.pickColor)}" value="${hex(o.accent_color)}" data-key="accent_color" data-color data-f="color-input"></span>${esc(t.ownColor)}</span>`;
+
+      const lines = (color) => `<span class="line" style="width: 70%; color: ${color}"></span><span class="line" style="width: 50%; color: ${color}"></span>`;
+      const glass = (tint) => {
+        const c = this._colors({ ...o, tint }, this._previewTheme);
+        return `<span style="display: flex; flex-direction: column; gap: 5px; padding: 8px; border-radius: 8px; background: ${c.glass}; backdrop-filter: blur(6px)">${lines(c.text)}</span>`;
+      };
+      const tints = ["theme", "light", "dark"].map((value) => ({ value, text: t.tints[value], demo: glass(value), dark: value === "dark" }));
+
+      const combos = [];
+      for (const highlight of ["soft", "vivid"]) {
+        for (const shape of ["pill", "bar", "outline"]) {
+          const c = this._colors({ ...o, selected_shape: shape, highlight }, "light");
+          const checked = o.selected_shape === shape && o.highlight === highlight;
+          combos.push(`<button type="button" class="choice" role="radio" aria-checked="${checked}" data-action="choose"
+            data-values='${esc(JSON.stringify({ selected_shape: shape, highlight }))}' data-f="sel-${shape}-${highlight}">
+            <span class="demo"><span class="pill" style="${c.selected}">${esc(t.sample)}</span><span class="pill" style="color: #1C1F24">Energie</span></span>
+            ${esc(t.shapes[shape])} · ${esc(highlight === "vivid" ? t.vividShort : t.soft)}</button>`);
+        }
+      }
+      const icons = ["theme", "accent", "muted"].map((value) => {
+        const c = this._colors({ ...o, icon_color: value }, "light");
+        return { value, text: t.iconColors[value], demo: [1, 2, 3].map(() =>
+          `<span class="pill" style="color: #1C1F24"><span class="dot" style="width: 9px; height: 9px; background: ${c.icon}"></span><span class="line" style="width: 46px"></span></span>`).join("") };
+      });
+
+      return `<div class="split"><section class="card" aria-label="${esc(t.tabs.color)}">
+        ${this._section(t.secAccent, `<div class="circles" role="radiogroup" aria-label="${esc(t.secAccent[0])}">${circles}${own}</div>`)}
+        ${this._section(t.secGlass, `${this._choices("tint", tints, o)}${this._sliderRow("opacity", t.opacity, 40, 100, "%", o)}${this._toggleRow("glow", t.glow, o)}`)}
+        ${this._section(t.secSelected, `<div class="choices combos" role="radiogroup" aria-label="${esc(t.secSelected[0])}">${combos.join("")}</div>`)}
+        ${this._section(t.secIcons, this._choices("icon_color", icons, o))}
+      </section>${this._previewCard("desktop")}</div>`;
+    }
+
+    _shapeTab(o) {
+      const t = this._t;
+      const densities = ["compact", "normal", "spacious"].map((value) => {
+        const gap = { compact: 2, normal: 5, spacious: 9 }[value];
+        return { value, text: t.densities[value], demo: `<span style="display: flex; flex-direction: column; gap: ${gap}px">${[1, 2, 3, 4].slice(0, value === "spacious" ? 3 : 4)
+          .map(() => `<span class="line" style="width: 80%; color: #1C1F24"></span>`).join("")}</span>` };
+      });
+      const shadows = ["none", "soft", "deep"].map((value) => ({ value, text: t.shadows[value],
+        demo: `<span style="height: 38px; width: 70%; margin: 0 auto; border-radius: 10px; background: rgba(255,255,255,.85); box-shadow: ${
+          { none: "none", soft: "0 6px 14px rgba(0,0,0,.18)", deep: "0 14px 28px rgba(0,0,0,.4)" }[value]}"></span>` }));
+      return `<div class="split"><section class="card" aria-label="${esc(t.tabs.shape)}">
+        ${this._section(t.secFloat, `${this._toggleRow("floating", t.floating, o)}${this._toggleRow("extend_background", t.extendBg, o)}${this._sliderRow("inset", t.inset, 0, 24, "px", o)}`)}
+        ${this._section(t.secSize, `${this._sliderRow("radius", t.radius, 0, 32, "px", o)}${this._sliderRow("blur", t.blur, 0, 40, "px", o)}`)}
+        ${this._section(t.secDensity, this._choices("density", densities, o))}
+        ${this._section(t.secShadow, this._choices("shadow", shadows, o))}
+        ${this._section(t.secExtra, `${this._toggleRow("hover_motion", t.hover, o)}${this._toggleRow("glass_cards", t.cards, o)}${
+          this._scope === "all" && this._admin ? this._toggleRow("quick_menu", t.quick, o) : ""}`)}
       </section>${this._previewCard("desktop")}</div>`;
     }
 
@@ -596,7 +752,7 @@
 
     _categoriesTab(o) {
       const t = this._t;
-      if (this._mine) {
+      if (this._mine || this._scope === "user") {
         return `<div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start">
           <h2>${esc(t.tabs.categories)}</h2><p class="muted" style="margin: 0">${esc(t.catShared)}</p>
           ${this._admin ? `<button type="button" class="btn primary" data-action="scope" data-value="all" data-f="to-shared">${esc(t.toShared)}</button>` : ""}</div>`;
@@ -794,8 +950,22 @@
           clearTimeout(this._saveTimer);
           this._save();
           this._scope = el.dataset.value;
+          if (this._scope === "user" && !this._people) this._loadPeople();
           this._render();
           break;
+        case "choose":
+          this._change(JSON.parse(el.dataset.values));
+          this._render();
+          break;
+        case "user-standard": {
+          const userStyles = { ...(this._settings.options.user_styles || {}) };
+          delete userStyles[this._target];
+          this._pending = {};
+          this._hass.callWS({ type: "glass_sidebar/settings/update", changes: { user_styles: userStyles } })
+            .then((settings) => { this._settings = settings; this._setStatus("saved"); this._render(); })
+            .catch(() => this._setStatus("error"));
+          break;
+        }
         case "to-standard":
           this._pending = {};
           this._personal = { ...(this._personal || {}), use_own: false };
@@ -896,6 +1066,11 @@
         this._updatePreview();
       } else if (el.dataset.catName !== undefined) {
         this._rename(Number(el.dataset.catName), el.value);
+      } else if (el.dataset.person !== undefined) {
+        clearTimeout(this._saveTimer);
+        this._save();
+        this._target = el.value;
+        this._render();
       }
     }
 
