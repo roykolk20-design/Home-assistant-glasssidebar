@@ -3,7 +3,7 @@
 # Glass Sidebar for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
-![Version](https://img.shields.io/badge/version-1.4.0-03A9F4)
+![Version](https://img.shields.io/badge/version-1.5.0-03A9F4)
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.10%2B-18BCF2)
 
 A modern, glass-style sidebar for Home Assistant. It turns the left navigation
@@ -15,26 +15,32 @@ is configured entirely from the UI. No YAML, no extra frontend resources.
 
 ![Before and after](images/compare.png)
 
-> The images on this page are design previews of the plugin's look. Your
-> sidebar uses your own theme colors, panels and names.
+> The sidebar images on this page are design previews; the settings page
+> screenshots come from Home Assistant itself. Your sidebar uses your own
+> theme colors, panels and names.
 
 ## Features
 
 - **Floating glass panel** with configurable distance to the screen edge,
   corner radius and blur.
-- **Categories**: group panels under your own headings, such as
-  *Dashboards* and *Insight*, picked from a list of your panels. Collapsed,
-  each heading becomes a thin divider.
+- **Settings page with live preview**: tabs for style, shape and glass,
+  color, phone and categories. Every change applies right away.
+- **Styles**: six ready-made looks (Frosted, Midnight, Vivid, Aurora, Minimal,
+  Solid) and your own saved styles.
+- **Categories**: drag panels into your own headings, each with an icon. Tap a
+  heading in the sidebar to fold it in or out. On the collapsed sidebar each
+  heading becomes a thin divider.
+- **Quick menu**: a button in the sidebar header for the most used settings.
 - **Vivid highlight** (optional): the page you're on gets a solid accent pill
   with a soft glow.
 - **Glass dashboard cards** (optional): your cards get the same frosted look.
-- **Theme aware**: uses your theme's colors, or an accent color of your own.
-- **Phone drawer**: on phones the menu opens wider, with larger touch targets
-  and a blurred page behind it. Tablets and desktops keep the normal layout.
+- **Theme aware**: uses your theme's colors, or a light or dark glass tint and
+  an accent color of your own.
+- **Phone drawer**: on phones the menu opens wider, with adjustable text size
+  and a blurred page behind it. Optional: open it by swiping from the edge,
+  square corners, and no header. Tablets and desktops keep the normal layout.
 - **Subtle motion**: icons slide slightly on hover. Can be turned off, and is
   off automatically when your device asks for reduced motion.
-- **Settings menu**: everything is set up from a menu in Home Assistant and
-  applies immediately in every open browser, without a reload.
 - **Notifications** open in the same floating glass panel.
 - **Works with sidebar themes**: themes that style the sidebar themselves, such
   as Frosted Glass, keep working for everything else.
@@ -91,27 +97,49 @@ Click the button above, or add it by hand:
 
 ## Configuration
 
-Go to **Settings → Devices & services → Glass Sidebar → Configure**. A menu
-opens with **Appearance**, **Phone** and **Categories**. Every change is saved
-and shown right away; choose **Close** when you're done.
+Go to **Settings → Devices & services → Glass Sidebar** and choose the
+**cog** (Configure). The Glass Sidebar settings page opens. Admins can also
+open it from the **quick menu** in the sidebar header (*All settings*).
 
-![Settings menu and category editor](images/options.png)
+Every change is saved and shown right away, in the preview and in your real
+sidebar, on every open browser.
 
-### Appearance
+![Choose a style](images/settings-style.png)
+
+### Style
+
+Pick one of six styles with one click, then fine-tune it on the other tabs.
+**Save current settings as a style** to keep your own look; your styles appear
+next to the built-in ones and can be removed again.
+
+A style sets floating, distance, radius, blur, opacity, glass tint, selected
+item and accent color. Categories and phone settings stay as they are.
+
+### Shape & glass
+
+![Shape and glass with live preview](images/settings-shape.png)
 
 | Option | Default | What it does |
 | --- | --- | --- |
-| Floating | On | Shows the sidebar as a separate panel with space around it. Off keeps it attached to the screen edge. |
+| Floating | On | A separate panel with space around it. Off keeps it attached to the screen edge. |
 | Distance to screen edge | 8 px | Space around the floating panel. |
 | Corner radius | 20 px | Roundness of the panel. Menu items follow along. |
 | Blur | 18 px | Strength of the glass blur. Also used for glass cards. |
-| Panel opacity | 74 % | Lower is more see-through. |
+| Opacity | 74 % | Lower is more see-through. |
+| Glass tint | Theme | *Theme* follows your theme. *Light* or *Dark* gives the glass a fixed color with matching text. |
 | Selected item | Soft tint | *Soft tint* or *Vivid with glow*. |
-| Use my own accent color | Off | Off follows your theme. On uses the **Accent color** below. |
 | Hover animation | On | Icons slide slightly when you point at them. |
 | Glass dashboard cards | Off | Makes cards translucent. Best with a background image; can be heavy on older tablets. |
+| Quick menu | On | The button in the sidebar header. Only admins see it. |
+
+### Color
+
+Use your theme's accent color, or pick one of the swatches or any color of
+your own.
 
 ### Phone
+
+![Phone settings with preview](images/settings-phone.png)
 
 Applies to screens up to 600 px wide.
 
@@ -120,23 +148,37 @@ Applies to screens up to 600 px wide.
 | Drawer width | 300 px | Width of the menu when it slides in. Never more than 90 % of the screen. |
 | Text size | 14 px | Size of the menu text. Rows grow along, but never get smaller than 44 px so they stay easy to tap. |
 | Blur the page behind the menu | On | Frosts the dashboard while the menu is open. |
+| Rounded corners | On | Off: the drawer sits flush against the screen edge. |
+| Open by swiping from the edge | Off | Swipe from the left edge to open the menu. |
+| Hide the header | Off | More room for your panels. |
 
 ### Categories
 
-Choose **Add a category**, give it a name and pick its panels from the list.
-The list shows every panel in your sidebar with its address, for example
-*Energy (/energy)*. Panels appear in the order you pick them.
+![Drag panels into categories](images/settings-categories.png)
 
-With **Edit or remove a category** you can rename a category, change its
-panels, move it to another position or remove it.
+- **Drag** a panel by its handle into a category, or within a category to
+  change the order. Works with mouse, pen and touch.
+- **Keyboard**: focus a handle and use the arrow keys. Up and down change the
+  order; left and right move the panel to the previous or next category.
+- **New category** adds an empty card; dropping a panel on the dashed area
+  creates one too. Click the name to rename it.
+- Pick an **icon** for each category with the icon button.
+- **Start collapsed** folds the category in by default. In the sidebar you can
+  tap a heading to fold it in or out; your browser remembers it. The page
+  you're on always stays visible.
 
 Panels you don't put in a category stay at the top in Home Assistant's own
-order. Settings, notifications and your profile always stay at the bottom. A
-panel in two categories appears in the first one. The order and visibility you
-set with Home Assistant's own *Edit sidebar* (long-press the title) still
-apply.
+order. Settings, notifications and your profile always stay at the bottom. The
+order and visibility you set with Home Assistant's own *Edit sidebar*
+(long-press the title) still apply.
 
-Categories written as text in version 1.1 are taken over automatically.
+### Quick menu
+
+![Quick menu](images/quick-menu.png)
+
+The button in the sidebar header opens a small glass menu with the styles,
+switches for floating, vivid highlight and glass cards, the opacity, and a
+link to all settings. Settings apply to everyone, so only admins see it.
 
 ## Updates
 
@@ -189,8 +231,9 @@ Assistant version.
 
 ## How it works
 
-The integration serves one small JavaScript file and asks Home Assistant to
-load it in the frontend. The script finds the sidebar inside Home Assistant's
+The integration serves two small JavaScript files: one that Home Assistant
+loads on every page, and the settings page, which it registers as a hidden
+panel linked to the integration. The script finds the sidebar inside Home Assistant's
 shadow DOM and adds a stylesheet to it. Your options are sent to the browser
 over Home Assistant's websocket, so changes apply instantly. Categories use
 CSS `order` and extra headings. The sidebar's own elements are never moved or

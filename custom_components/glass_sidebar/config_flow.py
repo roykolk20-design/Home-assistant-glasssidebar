@@ -31,13 +31,20 @@ from .const import (
     CONF_HOVER_MOTION,
     CONF_INSET,
     CONF_MOBILE_BLUR,
+    CONF_MOBILE_HIDE_HEADER,
+    CONF_MOBILE_ROUNDED,
+    CONF_MOBILE_SWIPE,
     CONF_MOBILE_TEXT_SIZE,
     CONF_MOBILE_WIDTH,
     CONF_OPACITY,
+    CONF_QUICK_MENU,
     CONF_RADIUS,
+    CONF_TINT,
     DEFAULTS,
     DOMAIN,
     HIGHLIGHTS,
+    PANEL_URL_PATH,
+    TINTS,
     stored_categories,
 )
 
@@ -48,7 +55,7 @@ CONF_POSITION = "position"
 CONF_REMOVE = "remove"
 
 # Panels HA always shows at the bottom; they can't be put in a category.
-FIXED_PANELS = {"config", "profile", "notfound"}
+FIXED_PANELS = {"config", "profile", "notfound", PANEL_URL_PATH}
 # Where HA keeps titles the user changed in the sidebar editor.
 DATA_PANELS_CONFIG = "frontend_panels_config"
 
@@ -72,6 +79,13 @@ APPEARANCE_SCHEMA = vol.Schema(
         vol.Required(CONF_RADIUS): _slider(0, 32),
         vol.Required(CONF_BLUR): _slider(0, 40),
         vol.Required(CONF_OPACITY): _slider(40, 100, "%"),
+        vol.Required(CONF_TINT): SelectSelector(
+            SelectSelectorConfig(
+                options=list(TINTS),
+                mode=SelectSelectorMode.LIST,
+                translation_key=CONF_TINT,
+            )
+        ),
         vol.Required(CONF_HIGHLIGHT): SelectSelector(
             SelectSelectorConfig(
                 options=list(HIGHLIGHTS),
@@ -83,6 +97,7 @@ APPEARANCE_SCHEMA = vol.Schema(
         vol.Required(CONF_ACCENT_COLOR): ColorRGBSelector(),
         vol.Required(CONF_HOVER_MOTION): BooleanSelector(),
         vol.Required(CONF_GLASS_CARDS): BooleanSelector(),
+        vol.Required(CONF_QUICK_MENU): BooleanSelector(),
     }
 )
 
@@ -91,6 +106,9 @@ MOBILE_SCHEMA = vol.Schema(
         vol.Required(CONF_MOBILE_WIDTH): _slider(240, 360),
         vol.Required(CONF_MOBILE_TEXT_SIZE): _slider(12, 20),
         vol.Required(CONF_MOBILE_BLUR): BooleanSelector(),
+        vol.Required(CONF_MOBILE_ROUNDED): BooleanSelector(),
+        vol.Required(CONF_MOBILE_SWIPE): BooleanSelector(),
+        vol.Required(CONF_MOBILE_HIDE_HEADER): BooleanSelector(),
     }
 )
 
@@ -276,7 +294,7 @@ class GlassSidebarOptionsFlow(config_entries.OptionsFlow):
                 position = min(max(int(user_input[CONF_POSITION]), 1), len(categories) + 1)
                 categories.insert(
                     position - 1,
-                    {"name": name, "panels": user_input.get(CONF_PANELS, [])},
+                    {**current, "name": name, "panels": user_input.get(CONF_PANELS, [])},
                 )
                 self._store({CONF_CATEGORIES: categories})
                 return await self.async_step_categories()

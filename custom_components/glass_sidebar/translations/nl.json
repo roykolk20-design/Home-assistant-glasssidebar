@@ -14,7 +14,7 @@
     "step": {
       "init": {
         "title": "Glass Sidebar",
-        "description": "Kies wat je wilt aanpassen. Wijzigingen worden meteen opgeslagen en getoond.",
+        "description": "**[Open de instellingenpagina](/glass-sidebar)** voor live voorbeelden, stijlen en categorieën slepen.\n\nOf pas hieronder iets aan. Wijzigingen worden meteen opgeslagen.",
         "menu_options": {
           "appearance": "Uiterlijk",
           "mobile": "Telefoon",
@@ -34,14 +34,17 @@
           "custom_accent": "Eigen accentkleur gebruiken",
           "accent_color": "Accentkleur",
           "hover_motion": "Hover-animatie",
-          "glass_cards": "Glazen dashboardkaarten"
+          "glass_cards": "Glazen dashboardkaarten",
+          "tint": "Kleur van het glas",
+          "quick_menu": "Snelmenu in de zijbalk"
         },
         "data_description": {
           "floating": "Toon de zijbalk als losse balk met ruimte eromheen.",
           "opacity": "Lager is meer doorzichtig.",
           "custom_accent": "Uit: gebruik de accentkleur van je thema.",
           "hover_motion": "Iconen schuiven iets op als je erop wijst.",
-          "glass_cards": "Maak dashboardkaarten doorschijnend met dezelfde vervaging. Het mooist met een achtergrondafbeelding. Kan zwaar zijn op oudere tablets."
+          "glass_cards": "Maak dashboardkaarten doorschijnend met dezelfde vervaging. Het mooist met een achtergrondafbeelding. Kan zwaar zijn op oudere tablets.",
+          "quick_menu": "Een knopje in de kop van de zijbalk voor snelle aanpassingen. Alleen voor beheerders."
         }
       },
       "mobile": {
@@ -50,7 +53,10 @@
         "data": {
           "mobile_width": "Breedte van de lade",
           "mobile_text_size": "Tekstgrootte",
-          "mobile_blur": "Pagina achter het menu vervagen"
+          "mobile_blur": "Pagina achter het menu vervagen",
+          "mobile_rounded": "Ronde hoeken",
+          "mobile_swipe": "Openen door vanaf de rand te vegen",
+          "mobile_hide_header": "Kop \"Home Assistant\" verbergen"
         }
       },
       "categories": {
@@ -102,6 +108,13 @@
       "options": {
         "soft": "Zachte tint",
         "vivid": "Fel met gloed"
+      }
+    },
+    "tint": {
+      "options": {
+        "theme": "Volg thema",
+        "light": "Licht",
+        "dark": "Donker"
       }
     }
   }

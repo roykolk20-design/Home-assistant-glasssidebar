@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.5.0]
+
+### New
+
+- **Settings page** with tabs for Style, Shape & glass, Color, Phone and
+  Categories, and a live preview. The integration's *Configure* button opens
+  it. Every change applies right away.
+- **Styles**: Frosted, Midnight, Vivid, Aurora, Minimal and Solid, plus your
+  own saved styles.
+- **Glass tint**: follow the theme, or light or dark glass with matching text.
+- **Categories**: drag and drop (mouse, pen and touch; arrow keys too), an
+  icon per category, and *start collapsed*. Tap a heading in the sidebar to
+  fold a category in or out; the page you're on stays visible.
+- **Quick menu** in the sidebar header for admins: styles, the main switches,
+  opacity and a link to all settings.
+- **Phone**: open the menu by swiping from the edge, square corners, and
+  hiding the header.
+
 ## [1.4.0]
 
 - **Changes are saved right away.** The settings menu no longer needs Save;

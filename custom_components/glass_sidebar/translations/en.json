@@ -14,7 +14,7 @@
     "step": {
       "init": {
         "title": "Glass Sidebar",
-        "description": "Choose what you want to change. Changes are saved and shown right away.",
+        "description": "**[Open the settings page](/glass-sidebar)** for live previews, styles and drag-and-drop categories.\n\nOr change something below. Changes are saved right away.",
         "menu_options": {
           "appearance": "Appearance",
           "mobile": "Phone",
@@ -34,14 +34,17 @@
           "custom_accent": "Use my own accent color",
           "accent_color": "Accent color",
           "hover_motion": "Hover animation",
-          "glass_cards": "Glass dashboard cards"
+          "glass_cards": "Glass dashboard cards",
+          "tint": "Glass tint",
+          "quick_menu": "Quick menu in the sidebar"
         },
         "data_description": {
           "floating": "Show the sidebar as a separate panel with space around it.",
           "opacity": "Lower is more see-through.",
           "custom_accent": "Off: use the accent color of your theme.",
           "hover_motion": "Icons slide slightly when you point at them.",
-          "glass_cards": "Make dashboard cards translucent with the same blur. Looks best with a background image. Can be heavy on older tablets."
+          "glass_cards": "Make dashboard cards translucent with the same blur. Looks best with a background image. Can be heavy on older tablets.",
+          "quick_menu": "A button in the sidebar header for quick changes. Admins only."
         }
       },
       "mobile": {
@@ -50,7 +53,10 @@
         "data": {
           "mobile_width": "Drawer width",
           "mobile_text_size": "Text size",
-          "mobile_blur": "Blur the page behind the menu"
+          "mobile_blur": "Blur the page behind the menu",
+          "mobile_rounded": "Rounded corners",
+          "mobile_swipe": "Open by swiping from the edge",
+          "mobile_hide_header": "Hide the \"Home Assistant\" header"
         }
       },
       "categories": {
@@ -102,6 +108,13 @@
       "options": {
         "soft": "Soft tint",
         "vivid": "Vivid with glow"
+      }
+    },
+    "tint": {
+      "options": {
+        "theme": "Follow theme",
+        "light": "Light",
+        "dark": "Dark"
       }
     }
   }
