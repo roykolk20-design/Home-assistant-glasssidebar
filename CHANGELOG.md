@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.3.0]
+
+- **Text size on phones** is now a setting (Phone → Text size). The default
+  is 14 px, the same as normal Home Assistant; it was 16 px.
+
 ## [1.2.1]
 
 - Ready for the Home Assistant Marketplace (built in from Home Assistant

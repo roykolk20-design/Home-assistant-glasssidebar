@@ -49,6 +49,7 @@
         "description": "These apply to screens up to 600 px wide. Tablets and computers keep the normal drawer.",
         "data": {
           "mobile_width": "Drawer width",
+          "mobile_text_size": "Text size",
           "mobile_blur": "Blur the page behind the menu"
         }
       },

@@ -49,6 +49,7 @@
         "description": "Geldt voor schermen tot 600 px breed. Tablets en computers houden de normale lade.",
         "data": {
           "mobile_width": "Breedte van de lade",
+          "mobile_text_size": "Tekstgrootte",
           "mobile_blur": "Pagina achter het menu vervagen"
         }
       },

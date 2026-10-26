@@ -3,7 +3,7 @@
 # Glass Sidebar for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories)
-![Version](https://img.shields.io/badge/version-1.2.1-03A9F4)
+![Version](https://img.shields.io/badge/version-1.3.0-03A9F4)
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2026.10%2B-18BCF2)
 
 A modern, glass-style sidebar for Home Assistant. It turns the left navigation
@@ -115,6 +115,7 @@ Applies to screens up to 600 px wide.
 | Option | Default | What it does |
 | --- | --- | --- |
 | Drawer width | 300 px | Width of the menu when it slides in. Never more than 90 % of the screen. |
+| Text size | 14 px | Size of the menu text. Rows grow along, but never get smaller than 44 px so they stay easy to tap. |
 | Blur the page behind the menu | On | Frosts the dashboard while the menu is open. |
 
 ### Categories

@@ -31,6 +31,7 @@ from .const import (
     CONF_HOVER_MOTION,
     CONF_INSET,
     CONF_MOBILE_BLUR,
+    CONF_MOBILE_TEXT_SIZE,
     CONF_MOBILE_WIDTH,
     CONF_OPACITY,
     CONF_RADIUS,
@@ -88,6 +89,7 @@ APPEARANCE_SCHEMA = vol.Schema(
 MOBILE_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_MOBILE_WIDTH): _slider(240, 360),
+        vol.Required(CONF_MOBILE_TEXT_SIZE): _slider(12, 20),
         vol.Required(CONF_MOBILE_BLUR): BooleanSelector(),
     }
 )

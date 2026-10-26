@@ -23,6 +23,7 @@ from .const import (
     CONF_HOVER_MOTION,
     CONF_INSET,
     CONF_MOBILE_BLUR,
+    CONF_MOBILE_TEXT_SIZE,
     CONF_MOBILE_WIDTH,
     CONF_OPACITY,
     CONF_RADIUS,
@@ -67,6 +68,7 @@ def build_config(entry: ConfigEntry) -> dict[str, Any]:
         "glass_cards": bool(options[CONF_GLASS_CARDS]),
         "mobile_width": int(options[CONF_MOBILE_WIDTH]),
         "mobile_blur": bool(options[CONF_MOBILE_BLUR]),
+        "mobile_text_size": int(options[CONF_MOBILE_TEXT_SIZE]),
         "categories": stored_categories(options),
     }
 

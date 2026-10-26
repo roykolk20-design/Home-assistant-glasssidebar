@@ -1,7 +1,7 @@
 from typing import Any
 
 DOMAIN = "glass_sidebar"
-VERSION = "1.2.1"
+VERSION = "1.3.0"
 JS_PATH = f"/{DOMAIN}/sidebar.js"
 JS_URL = f"{JS_PATH}?v={VERSION}"
 SIGNAL_UPDATE = f"{DOMAIN}_update"
@@ -18,6 +18,7 @@ CONF_HOVER_MOTION = "hover_motion"
 CONF_GLASS_CARDS = "glass_cards"
 CONF_MOBILE_WIDTH = "mobile_width"
 CONF_MOBILE_BLUR = "mobile_blur"
+CONF_MOBILE_TEXT_SIZE = "mobile_text_size"
 CONF_CATEGORIES = "categories"
 
 HIGHLIGHTS = ("soft", "vivid")
@@ -35,6 +36,7 @@ DEFAULTS: dict[str, Any] = {
     CONF_GLASS_CARDS: False,
     CONF_MOBILE_WIDTH: 300,
     CONF_MOBILE_BLUR: True,
+    CONF_MOBILE_TEXT_SIZE: 14,
     CONF_CATEGORIES: [],
 }
 

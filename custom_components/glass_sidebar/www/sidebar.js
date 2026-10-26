@@ -92,6 +92,9 @@
     const radius = config.floating ? config.radius : 0;
     const itemRadius = Math.min(Math.max(radius - 6, 8), 14);
     const opacity = config.opacity ?? 74;
+    const mobileText = config.mobile_text_size ?? 14;
+    // Rows grow with the text but stay a comfortable touch target.
+    const mobileItemHeight = Math.max(44, Math.round(mobileText * 3));
     return `
       :host {
         ${
@@ -142,11 +145,11 @@
 
         :host([narrow][expanded]) ha-list-item-button {
           width: calc(100% - 8px);
-          --ha-row-item-min-height: 48px;
+          --ha-row-item-min-height: ${mobileItemHeight}px;
         }
 
         :host([narrow]) ha-list-item-button .item-text {
-          font-size: 16px;
+          font-size: ${mobileText}px;
         }
       }
 
